@@ -4,11 +4,14 @@ package
 
     public class PlayState extends FlxState{
         [Embed(source="../assets/bg.png")] private var ImgBg:Class;
+        [Embed(source="../assets/box.png")] private var ImgBox:Class;
 
         public var _bg:FlxSprite;
         public var _planet:Planet;
         public var _player:Player;
         public var _hud:FlxText;
+        public var checkLanding:Boolean = true;
+        public var _box:FlxSprite = null;
 
         override public function create():void{
             _bg = new FlxSprite(0,0);
@@ -32,10 +35,33 @@ package
 
             _hud.text = "Money: " + _player._money.toString() + " PSD" + "\nYou have been traveling for " + _player._yearsTraveled.toString() + " years." + "\nYou are " + _player._age.toString() + " years old.";
 
+            if(checkLanding){
+                _player._grounded = false;
+                _planet._moving = true;
+                FlxG.overlap(_player,_planet,landingCollision);
+            } else {
+                if(_box == null){
+                    _box = new FlxSprite(30,150);
+                    _box.loadGraphic(ImgBox,false,false,565,190);
+                    add(_box);
+                }
+                if(FlxG.keys.SPACE){
+                    if(_box != null){
+                        _box.destroy();
+                    }
+                    landingLock();
+                }
+            }
         }
 
-        public function landing(player:Player, planet:Planet):void{
-            //player lands
+        public function landingCollision(player:Player, planet:Planet):void{
+            player._grounded = true;
+            planet._moving = false;
+            checkLanding = false;
+        }
+
+        public function landingLock():void{
+            checkLanding = true;
         }
     }
 }

@@ -8,6 +8,7 @@ package
         public var _money:Number = 0;
         public var _age:Number = 35;
         public var _yearsTraveled:Number = 0;
+        public var _grounded:Boolean = false;
 
         public function Player(x:int,y:int):void{
             super(x,y);
@@ -18,10 +19,12 @@ package
             super.update();
             borderCollide();
 
-            if(FlxG.keys.LEFT){
-                this.x--;
-            } else if(FlxG.keys.RIGHT){
-                this.x++;
+            if(!_grounded){
+                if(FlxG.keys.LEFT){
+                    this.x--;
+                } else if(FlxG.keys.RIGHT){
+                    this.x++;
+                }
             }
 
         }
