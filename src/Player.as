@@ -9,35 +9,29 @@ package
         public var _age:Number = 35;
         public var _yearsTraveled:Number = 0;
         public var _grounded:Boolean = false;
+        public var timeSec:Number = 0;
+        public var timeFrame:Number = 0;
 
         public function Player(x:int,y:int):void{
             super(x,y);
-            loadGraphic(ImgShip,false,false,17,42);
+            //loadGraphic(ImgShip,false,false,17,42);
         }
 
         override public function update():void{
             super.update();
-            borderCollide();
-
-            if(!_grounded){
-                if(FlxG.keys.LEFT){
-                    this.x--;
-                } else if(FlxG.keys.RIGHT){
-                    this.x++;
-                }
+            timeFrame++;
+            if(timeFrame%50 == 0){
+                timeSec++;
             }
 
-        }
+            if(timeFrame%500 == 0){
+                _age++;
+                _yearsTraveled++;
+            }
+            if(timeFrame%250 == 0){
+                _money -= 10;
+            }
 
-        public function borderCollide():void{
-            if(x >= FlxG.width - width)
-                x = FlxG.width - width;
-            if(this.x <= 0)
-                this.x = 0;
-            if(this.y >= FlxG.height - height)
-                this.y = FlxG.height - height;
-            if(this.y <= 0)
-                this.y = 0;
         }
     }
 }
