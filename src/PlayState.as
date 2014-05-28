@@ -51,11 +51,10 @@ package
             add(_player);
 
             _bubble = new FlxSprite(_player.x-100,_player.y-100);
-            _bubble.loadGraphic(ImgBubble,false,false,114,108);
+            _bubble.loadGraphic(ImgBubble,false,false,171,111);
             add(_bubble);
-            _bubble.alpha = 0;
 
-            _bubbletext = new FlxText(_bubble.x+5,_bubble.y+25,110,"");
+            _bubbletext = new FlxText(_bubble.x+23,_bubble.y+25,150,"");
             _bubbletext.setFormat("FORCEDSQUARE",14,0xFFFFFFFF);
             add(_bubbletext);
 
@@ -83,11 +82,11 @@ package
             _hudTxt.text = "Money: " + _player._money.toString() + " PSD";
             _planetTraitText.text = _planet.current_trait;
 
-            if(_planet.x > FlxG.width){
-                _planet.resetPos(0,100);
+            if(_planet.x > 640){
+                _planet.resetPos(10,100);
             }
             if(_planet.x < 0){
-                _planet.resetPos(FlxG.width,100);
+                _planet.resetPos(FlxG.width-10,100);
             }
 
             if(!_planet._moving){
@@ -96,7 +95,6 @@ package
                 _bubbletext.text = _player._yearsTraveled.toString() + " years traveled." + "\n" + _player._age.toString() + " years old.";
                 _letter1.alpha = 1;
                 _lettertext.alpha = 1;
-                _bubble.alpha = 1;
                 if(FlxG.keys.SPACE){
                     _planet._moving = true;
                     _player._money += 100;
@@ -104,11 +102,32 @@ package
                     _planet.scale.x = 1;
                     _letter1.alpha = 0;
                     _lettertext.alpha = 0;
-                    _bubble.alpha = 0;
-                    _bubbletext.text = "";
                 }
             } else {
                 debugText.text = "flying";
+                if(_player._age > 34){
+                    _bubbletext.text = "The money is good. I'm glad I can send home my extra cash.";
+                } else if(_player._age > 36){
+                    _bubbletext.text = "It's been a few years since I went home... hope Alex is doing ok, like the letters say.";
+                } else if(_player._age > 45){
+                    _bubbletext.text = "Maybe Alex would like a letter from me... I don't know.";
+                } else if(_player._age > 50){
+                    _bubbletext.text = "Alex should be in college by now. Hope the money's helping.";
+                } else if(_player._age > 55){
+                    _bubbletext.text = "I don't even recognize Alex anymore... she's so tall.";
+                } else if(_player._age > 60){
+                    _bubbletext.text = "I could go back, just to say hello.";
+                } else if(_player._age > 65){
+                    _bubbletext.text = "I don't know how much longer I can do deliveries...";
+                } else if(_player._age > 70){
+                    _bubbletext.text = "Alex might not even be living on Wellar anymore.";
+                } else if(_player._age > 80){
+                    _bubbletext.text = "I don't think I ever even told Alex that I love her...";
+                }
+            }
+
+            if(_player._age > 90){
+                FlxG.switchState(new MenuState());
             }
         }
     }

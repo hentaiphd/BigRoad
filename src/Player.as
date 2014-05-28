@@ -5,7 +5,7 @@ package
     public class Player extends FlxSprite{
         [Embed(source="../assets/person.png")] private var ImgPerson:Class;
 
-        public var _money:Number = 0;
+        public var _money:Number = 500;
         public var _age:Number = 35;
         public var _yearsTraveled:Number = 0;
         public var _grounded:Boolean = false;

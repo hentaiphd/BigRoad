@@ -65,7 +65,7 @@ package
             }
         }
 
-        public function resetPos(newx:int, newy:int):void{
+        public function resetPos(newx:Number, newy:Number):void{
             var rand:Number = Math.random()*4;
             current_trait = traits[rand];
             current_status = trait_status[rand];
