@@ -65,7 +65,7 @@ package
 
             _planetTraitText = new FlxText(90,305,219,"");
             add(_planetTraitText);
-            _planetTraitText.setFormat("FORCEDSQUARE",14,0xFFFFFFFF);
+            _planetTraitText.setFormat("FORCEDSQUARE",16,0xFFFFFFFF);
 
             _box = new FlxSprite(10,150);
             _box.loadGraphic(ImgBox,false,false,565,190);
