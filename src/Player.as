@@ -3,7 +3,7 @@ package
     import org.flixel.*;
 
     public class Player extends FlxSprite{
-        [Embed(source="../assets/ship.png")] private var ImgShip:Class;
+        [Embed(source="../assets/person.png")] private var ImgPerson:Class;
 
         public var _money:Number = 0;
         public var _age:Number = 35;
@@ -14,7 +14,7 @@ package
 
         public function Player(x:int,y:int):void{
             super(x,y);
-            //loadGraphic(ImgShip,false,false,17,42);
+            loadGraphic(ImgPerson,false,false,17,55);
         }
 
         override public function update():void{

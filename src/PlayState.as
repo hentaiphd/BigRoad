@@ -6,6 +6,8 @@ package
         [Embed(source="../assets/bg.png")] private var ImgBg:Class;
         [Embed(source="../assets/box.png")] private var ImgBox:Class;
         [Embed(source="../assets/hud.png")] private var ImgHud:Class;
+        [Embed(source="../assets/letter1.png")] private var ImgL1:Class;
+        [Embed(source="../assets/bubble.png")] private var ImgBubble:Class;
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
 
         public var _bg:FlxSprite;
@@ -18,6 +20,10 @@ package
         public var _hud:FlxSprite;
         public var debugText:FlxText;
         public var _planetTraitText:FlxText;
+        public var _letter1:FlxSprite;
+        public var _lettertext:FlxText;
+        public var _bubble:FlxSprite;
+        public var _bubbletext:FlxText;
 
         override public function create():void{
             _bg = new FlxSprite(0,0);
@@ -27,12 +33,31 @@ package
             _planet = new Planet(100,100,1);
             add(_planet);
 
-            _player = new Player(200,200);
-            add(_player);
-
             _hud = new FlxSprite(0,0);
             _hud.loadGraphic(ImgHud,false,false,640,480);
             add(_hud);
+
+            _letter1 = new FlxSprite(350,70);
+            _letter1.loadGraphic(ImgL1,false,false,176,375);
+            add(_letter1);
+            _letter1.alpha = 0;
+
+            _lettertext = new FlxText(360,250,170,"I miss you! Come home soon!");
+            add(_lettertext);
+            _lettertext.setFormat("FORCEDSQUARE",14,0xFFFFFFFF);
+            _lettertext.alpha = 0;
+
+            _player = new Player(FlxG.width-100,FlxG.height-55);
+            add(_player);
+
+            _bubble = new FlxSprite(_player.x-100,_player.y-100);
+            _bubble.loadGraphic(ImgBubble,false,false,114,108);
+            add(_bubble);
+            _bubble.alpha = 0;
+
+            _bubbletext = new FlxText(_bubble.x+5,_bubble.y+25,110,"");
+            _bubbletext.setFormat("FORCEDSQUARE",14,0xFFFFFFFF);
+            add(_bubbletext);
 
             _hudTxt = new FlxText(200,440,FlxG.width,"");
             add(_hudTxt);
@@ -67,12 +92,20 @@ package
 
             if(!_planet._moving){
                 debugText.text = "landed";
-                _planetTraitText.text = _planet.current_status + "\nYou have been traveling for " + _player._yearsTraveled.toString() + " years." + "\nYou are " + _player._age.toString() + " years old.";
+                _planetTraitText.text = _planet.current_status;
+                _bubbletext.text = _player._yearsTraveled.toString() + " years traveled." + "\n" + _player._age.toString() + " years old.";
+                _letter1.alpha = 1;
+                _lettertext.alpha = 1;
+                _bubble.alpha = 1;
                 if(FlxG.keys.SPACE){
                     _planet._moving = true;
                     _player._money += 100;
                     _planet.scale.y = 1;
                     _planet.scale.x = 1;
+                    _letter1.alpha = 0;
+                    _lettertext.alpha = 0;
+                    _bubble.alpha = 0;
+                    _bubbletext.text = "";
                 }
             } else {
                 debugText.text = "flying";
