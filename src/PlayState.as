@@ -24,6 +24,8 @@ package
         public var _lettertext:FlxText;
         public var _bubble:FlxSprite;
         public var _bubbletext:FlxText;
+        public var current_bubble_text:String = "";
+        public var _earning:Number = 100;
 
         override public function create():void{
             _bg = new FlxSprite(0,0);
@@ -97,7 +99,7 @@ package
                 _lettertext.alpha = 1;
                 if(FlxG.keys.SPACE){
                     _planet._moving = true;
-                    _player._money += 100;
+                    _player._money += _earning;
                     _planet.scale.y = 1;
                     _planet.scale.x = 1;
                     _letter1.alpha = 0;
@@ -105,24 +107,34 @@ package
                 }
             } else {
                 debugText.text = "flying";
-                if(_player._age > 34){
-                    _bubbletext.text = "The money is good. I'm glad I can send home my extra cash.";
-                } else if(_player._age > 36){
-                    _bubbletext.text = "It's been a few years since I went home... hope Alex is doing ok, like the letters say.";
-                } else if(_player._age > 45){
-                    _bubbletext.text = "Maybe Alex would like a letter from me... I don't know.";
-                } else if(_player._age > 50){
-                    _bubbletext.text = "Alex should be in college by now. Hope the money's helping.";
-                } else if(_player._age > 55){
-                    _bubbletext.text = "I don't even recognize Alex anymore... she's so tall.";
-                } else if(_player._age > 60){
-                    _bubbletext.text = "I could go back, just to say hello.";
-                } else if(_player._age > 65){
-                    _bubbletext.text = "I don't know how much longer I can do deliveries...";
-                } else if(_player._age > 70){
-                    _bubbletext.text = "Alex might not even be living on Wellar anymore.";
-                } else if(_player._age > 80){
-                    _bubbletext.text = "I don't think I ever even told Alex that I love her...";
+                _bubbletext.text = current_bubble_text;
+                if(_player._age == 35){
+                    _earning = 100;
+                    current_bubble_text = "The money is good. I'm glad I can send home my extra cash.";
+                } else if(_player._age == 36){
+                    _earning = 150;
+                    current_bubble_text = "It's been a few years since I went home... hope Alex is doing ok, like the letters say.";
+                } else if(_player._age == 45){
+                    _earning = 200;
+                    current_bubble_text = "Maybe Alex would like a letter from me... I don't know.";
+                } else if(_player._age == 50){
+                    _earning = 250;
+                    current_bubble_text = "Alex should be in college by now. Hope the money's helping.";
+                } else if(_player._age == 55){
+                    _earning = 300;
+                    current_bubble_text = "I don't even recognize Alex anymore... she's so tall.";
+                } else if(_player._age == 60){
+                    _earning = 350;
+                    current_bubble_text = "I could go back, just to say hello.";
+                } else if(_player._age == 65){
+                    _earning = 400;
+                    current_bubble_text = "I don't know how much longer I can do deliveries...";
+                } else if(_player._age == 70){
+                    _earning = 450;
+                    current_bubble_text = "Alex might not even be living on Wellar anymore.";
+                } else if(_player._age == 80){
+                    _earning = 500;
+                    current_bubble_text = "I don't think I ever even told Alex that I love her...";
                 }
             }
 
