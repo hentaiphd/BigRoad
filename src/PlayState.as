@@ -116,9 +116,12 @@ package
                 _player._grounded = true;
                 if(FlxG.keys.SPACE){
                     _planet._moving = true;
-                    _player._money += _earning;
-                    _planet.scale.y = 1;
-                    _planet.scale.x = 1;
+                    if(_planet.earn){
+                        _player._money += _earning;
+                    } else {
+                        _player._money -= _earning;
+                    }
+                    _planet.resetPos(100,100);
                     _letter1.alpha = 0;
                     _lettertext.alpha = 0;
                     _player._grounded = false;

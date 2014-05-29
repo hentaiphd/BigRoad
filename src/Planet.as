@@ -10,6 +10,8 @@ package
 
         public var _moving:Boolean = true;
         public var timeFrame:Number = 0;
+        public var earn:Boolean = true;
+        public var earning:Array = [true,true,false,true,false,true,true,true,true,false,false,false,false]
         public var traits:Array = ["Ikabod is a planet full of languages. Everyone speaks everything and they get along quite well.",
         "Nerkel is a zoo of a place. Not one creature looks alike. All the babies always look different and it's quite wonderful.",
         "Bloofs is full of sea creatures that can't swim. They are too light, and float just above the water, no matter how hard they try.",
@@ -55,6 +57,7 @@ package
 
             current_trait = traits[rand];
             current_status = trait_status[rand];
+            earn = earning[rand];
 
             if(scale > 1){
                 this.scale.x = 2;
@@ -94,6 +97,7 @@ package
             var rand:Number = Math.floor(Math.random()*traits.length);
             current_trait = traits[rand];
             current_status = trait_status[rand];
+            earn = earning[rand];
 
             this.scale.x = 1;
             this.scale.y = 1;
