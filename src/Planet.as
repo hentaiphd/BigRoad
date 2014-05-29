@@ -66,7 +66,7 @@ package
         }
 
         public function resetPos(newx:Number, newy:Number):void{
-            var rand:Number = Math.random()*4;
+            var rand:Number = Math.floor(Math.random()*traits.length);
             current_trait = traits[rand];
             current_status = trait_status[rand];
 
