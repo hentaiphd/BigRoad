@@ -10,10 +10,35 @@ package
 
         public var _moving:Boolean = true;
         public var timeFrame:Number = 0;
-        public var traits:Array = ["Ichabod is a planet full of languages. Everyone speaks everything and they get along quite well.", "Nerkle is a zoo of a place. Not one creature looks alike. All the babies always look different and it's quite wonderful.", "Bloogs is a lonely place, full of sea creatures that can never swim. They are too light, and always float just above the water, no matter how hard they try to dive.", "Klotz is harsh and full of sharp sticks. They don't care, they'll poke anyone. Be careful!"];
-        public var trait_status:Array = ["The stock person is very nice to you, and tips you well!\nYou're able to send your kid 200 PSD.", "The stock person is a little scatterbrained, but well meaning. She tips you well!\nYou're able to send your kid 200 PSD.", "There is no one to meet you at the stock station. You leave the supplies without getting paid.\nYou're able to send your kid 50 PSD.", "The stock person rushes you in and out, and leaves no tip.\nYou're able to send your kid 100 PSD."];
+        public var traits:Array = ["Ikabod is a planet full of languages. Everyone speaks everything and they get along quite well.",
+        "Nerkel is a zoo of a place. Not one creature looks alike. All the babies always look different and it's quite wonderful.",
+        "Bloofs is full of sea creatures that can't swim. They are too light, and float just above the water, no matter how hard they try.",
+        "Klots is harsh and full of sharp sticks. They don't care, they'll poke anyone. Be careful!",
+        "West Bees is a planet with a single island, full of colossal creatures shaped like eggs. They bite.",
+        "Wockel is a pocket sized planet. It's full of real chatterboxes shaped like people.",
+        "Ploo is a little planet full of lovely fuzzy people that love to hug.",
+        "Pleep is a huge planet full of sprinters. Everyone's always in a rush, scrambling to train for the next big race.",
+        "Biv is where musicians like to live. The entire place is a band and no one ever stops playing.",
+        "Clandall is a planet full of sleepwalkers. I wonder when they'll wake up?",
+        "Topp is a planet for packing. Everything in the store is wrapped up and sealed here.",
+        "Effel is a planet with huge morphing mountains. It's dangerous. Don't get crushed!",
+        "Spackle is the planet where Yees live. Yees are shy, and flee at the drop of a pin."];
+        public var trait_status:Array = ["The stock person is very nice to you, and tips you well!",
+        "The stock person is a little scatterbrained, but well meaning. She tips you well!",
+        "There is no one to meet you at the stock station. You leave the supplies without getting paid.",
+        "The stock person rushes you in and out, and leaves no tip.",
+        "There is no stock person. You get chased away by the egg-shaped creatures.",
+        "The stock person talks your ear off, but you like him because his tips are good.",
+        "The stock person gives you cookies and milk, and sends you off with a hug and a tip!",
+        "The stock person rushes you in and out, and leaves no tip.",
+        "The stock person plays you a little tune and hands you a tip.",
+        "The stock person is asleep. You leave without getting paid.",
+        "There is no stock person. Everything's done by machines.",
+        "There is no stock person. The mountains are too dangerous.",
+        "There is no stock person. The Yees are too afraid."];
         public var current_trait:String;
         public var current_status:String;
+        public var speed:Number = 5;
 
         public function Planet(x:int,y:int,scale:int):void{
             super(x,y);
@@ -44,22 +69,22 @@ package
             super.update();
             timeFrame++;
 
-            if(FlxG.keys.LEFT){
-                this.x--;
-            } else if(FlxG.keys.RIGHT){
-                this.x++;
-            }
-
             if(_moving){
+                if(FlxG.keys.LEFT){
+                    this.x -= speed;
+                } else if(FlxG.keys.RIGHT){
+                    this.x += speed;
+                }
+
                 if(timeFrame%1 == 0){
                     if(this.scale.x < 10){
-                        this.scale.x += .01;
+                        this.scale.x += .03;
                     } else {
                         _moving = false;
                     }
 
                     if(this.scale.y < 10){
-                        this.scale.y += .01;
+                        this.scale.y += .03;
                     }
                 }
             }

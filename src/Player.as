@@ -9,8 +9,11 @@ package
         public var _age:Number = 35;
         public var _yearsTraveled:Number = 0;
         public var _grounded:Boolean = false;
+        public var _deduction:Number = 100;
         public var timeSec:Number = 0;
         public var timeFrame:Number = 0;
+        public var deduct:Boolean = false;
+        public var deductcounter:Number = 0;
 
         public function Player(x:int,y:int):void{
             super(x,y);
@@ -24,14 +27,24 @@ package
                 timeSec++;
             }
 
-            if(timeFrame%500 == 0){
-                _age++;
-                _yearsTraveled++;
-            }
-            if(timeFrame%250 == 0){
-                _money -= 10;
+            if(!_grounded){
+                if(timeFrame%250 == 0){
+                    _age++;
+                    _yearsTraveled++;
+                    deduct = true;
+                }
             }
 
+            if(deduct){
+                _money--;
+
+                if(deductcounter < _deduction){
+                    deductcounter++;
+                } else {
+                    deductcounter = 0;
+                    deduct = false;
+                }
+            }
         }
     }
 }
