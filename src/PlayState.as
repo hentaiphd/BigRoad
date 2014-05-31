@@ -11,8 +11,7 @@ package
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
 
         public var _bg:FlxSprite;
-        public var _planet:Planet;
-        public var _planet2:Planet;
+        public var _planet:Planet, _planet2:Planet;
         public var _player:Player;
         public var _hudTxt:FlxText;
         public var checkLanding:Boolean = true;
@@ -38,16 +37,22 @@ package
             _planet = new Planet(100,100,1);
             add(_planet);
 
+            _planet2 = new Planet(300,300,1);
+            add(_planet2);
+
             _player = new Player(100,100);
             add(_player);
 
+            _player.attach(_planet);
+            // temporary, this sucks
+            _player.__targetPlanet = _planet2;
+
             _instruction = new FlxText(150,200,500,"LEFT or RIGHT to fly.");
             _instruction.setFormat("FORCEDSQUARE",34,0xFFFFFFFF);
-            add(_instruction);
+            //add(_instruction);
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
-
         }
 
         override public function update():void{
@@ -58,11 +63,11 @@ package
             }
 
             if(FlxG.keys.LEFT){
-                _player._angle += (Math.PI*2)/100;
-                _player.calcPosition(_planet);
-            }else if(FlxG.keys.RIGHT){
-                _player._angle -= (Math.PI*2)/100;
-                _player.calcPosition(_planet);
+                _player.arrowPressed(true);
+            } else if(FlxG.keys.RIGHT){
+                _player.arrowPressed(false);
+            } else if (FlxG.keys.justReleased("SPACE")) {
+                _player.detach();
             }
         }
     }
