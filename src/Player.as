@@ -3,7 +3,7 @@ package
     import org.flixel.*;
 
     public class Player extends FlxSprite{
-        [Embed(source="../assets/person.png")] private var ImgPerson:Class;
+        [Embed(source="../assets/ship.png")] private var ImgPlayer:Class;
 
         public var _money:Number = 500;
         public var _age:Number = 35;
@@ -14,10 +14,14 @@ package
         public var timeFrame:Number = 0;
         public var deduct:Boolean = false;
         public var deductcounter:Number = 0;
+        public var _angle:Number = 0;
+        public var newPos:DHPoint;
 
         public function Player(x:int,y:int):void{
             super(x,y);
-            loadGraphic(ImgPerson,false,false,17,55);
+            loadGraphic(ImgPlayer,false,false,17,42);
+            newPos = new DHPoint(x,y);
+            this.scale.y = -1;
         }
 
         override public function update():void{
@@ -27,24 +31,16 @@ package
                 timeSec++;
             }
 
-            if(!_grounded){
-                if(timeFrame%250 == 0){
-                    _age++;
-                    _yearsTraveled++;
-                    deduct = true;
-                }
-            }
+            this.x = newPos.x;
+            this.y = newPos.y;
 
-            if(deduct){
-                _money--;
+            this.angle = _angle*(180/Math.PI)*-1;
+        }
 
-                if(deductcounter < _deduction){
-                    deductcounter++;
-                } else {
-                    deductcounter = 0;
-                    deduct = false;
-                }
-            }
+        public function calcPosition(p:Planet):void{
+            newPos = new DHPoint(p._radius*Math.sin(_angle),p._radius*Math.cos(_angle));
+            newPos.x += p.x+10;
+            newPos.y += p.y+5;
         }
     }
 }
