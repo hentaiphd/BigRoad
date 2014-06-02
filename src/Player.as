@@ -71,6 +71,12 @@ package
                 this._angle = angleToTarget;
                 this.flightDirection = new DHPoint(Math.sin(turnAngle)*3, Math.cos(turnAngle)*3);
                 this.flightDirection = new DHPoint(xDisp*.1, yDisp*.1);
+
+                if(xDisp < 1){
+                    if(yDisp < 1){
+                        this.attach(__targetPlanet);
+                    }
+                }
             }
 
             this.angle = _angle*(180/Math.PI)*-1;
