@@ -7,6 +7,7 @@ package{
         [Embed(source="../assets/truck_top.png")] private var ImgTruck:Class;
         [Embed(source="../assets/wings.png")] private var ImgWings:Class;
         [Embed(source="../assets/boostflash.png")] private var ImgBoost:Class;
+        [Embed(source="../assets/sparks.png")] private var ImgSparks:Class;
 
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
@@ -27,6 +28,19 @@ package{
         public var right_wing:FlxSprite;
         public var boost_flash:FlxSprite;
 
+        public var sparks_l:FlxSprite;
+        public var sparks_l_group:FlxGroup;
+        public var spark_l_speed:Number;
+        public var spark_l_speed_group:Array = new Array();
+
+        public var sparks_r:FlxSprite;
+        public var sparks_r_group:FlxGroup;
+        public var spark_r_speed:Number;
+        public var spark_r_speed_group:Array = new Array();
+
+        public var timeSec:Number = 0;
+        public var timeFrame:Number = 0;
+
         override public function create():void{
             FlxG.mouse.hide();
 
@@ -42,14 +56,14 @@ package{
             left_wing.loadGraphic(ImgWings,true,false,32,80);
             left_wing.addAnimation("leftwing",[0],12,false);
             left_wing.addAnimation("leftwing_flare",[1,2,3],12,true);
-            left_wing.play("leftwing_flare");
+            left_wing.play("leftwing");
             this.add(left_wing);
 
             right_wing = new WigglySprite(truck_pos.x+37,truck_pos.y+126);
             right_wing.loadGraphic(ImgWings,true,false,32,80);
             right_wing.addAnimation("rightwing",[4],12,false);
             right_wing.addAnimation("rightwing_flare",[5,6,7],12,true);
-            right_wing.play("rightwing_flare");
+            right_wing.play("rightwing");
             this.add(right_wing);
 
             truck_group = new FlxGroup();
@@ -59,6 +73,8 @@ package{
                 truck = new WigglySprite(truck_pos.x,truck_pos.y);
                 truck.loadGraphic(ImgTruck,true,false,42,186);
                 truck.addAnimation("segment",[i],12,false);
+                truck.addAnimation("segment_quicker",[i],15,false);
+                truck.addAnimation("segment_more_quick",[i],20,false);
                 truck.play("segment");
                 this.add(truck);
                 truck_group.add(truck);
@@ -68,7 +84,34 @@ package{
             boost_flash.loadGraphic(ImgBoost,true,false,96,64);
             boost_flash.addAnimation("boost",[0],12,false);
             boost_flash.play("boost");
-            //this.add(boost_flash);
+
+            sparks_l_group = new FlxGroup();
+            this.add(sparks_l_group);
+
+            sparks_r_group = new FlxGroup();
+            this.add(sparks_r_group);
+
+            for(i = 0; i < 20; i++){
+                sparks_l = new WigglySprite(left_wing.x+Math.random()*20,left_wing.y + (Math.random()*100)+20);
+                sparks_l.loadGraphic(ImgSparks,true,false,16,16);
+                sparks_l.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
+                sparks_l.play("spark");
+                sparks_l_group.add(sparks_l);
+
+                spark_l_speed = (Math.random()*5)+2;
+                spark_l_speed_group.push(spark_l_speed);
+            }
+
+            for(i = 0; i < 20; i++){
+                sparks_r = new WigglySprite(right_wing.x+Math.random()*20,right_wing.y + (Math.random()*100)+20);
+                sparks_r.loadGraphic(ImgSparks,true,false,16,16);
+                sparks_r.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
+                sparks_r.play("spark");
+                sparks_r_group.add(sparks_r);
+
+                spark_r_speed = (Math.random()*5)+2;
+                spark_r_speed_group.push(spark_r_speed);
+            }
 
             trees_left = new FlxGroup();
             this.add(trees_left);
@@ -114,27 +157,39 @@ package{
 
         override public function update():void{
             super.update();
+            timeFrame++;
+            if(timeFrame%50 == 0){
+                timeSec++;
+            }
+
+            if(timeSec == 10){
+                this.add(boost_flash);
+                boost_speed(false);
+            }
+            if(timeSec == 12){
+                boost_flash.kill();
+                left_wing.play("leftwing_flare");
+                right_wing.play("rightwing_flare");
+                this.add(sparks_r);
+                this.add(sparks_l);
+                boost_speed(false);
+            }
 
             for(i = 0; i < trees_left.length; i++){
                 update_trees(i,trees_left);
                 update_trees(i,trees_right);
             }
 
-            /*for(i = 0; i < truck_group.length; i++){
-                if(truck_group.members[i].x > truck_pos.x+.5){
-                    jiggle = true;
-                } else if(truck_group.members[i].x < truck_pos.x-.5) {
-                    jiggle = false;
+            for(i = 0; i < sparks_l_group.length; i++){
+                sparks_l_group.members[i].y += spark_l_speed_group[i];
+                sparks_r_group.members[i].y += spark_r_speed_group[i];
+                if(sparks_l_group.members[i].y > FlxG.height){
+                    sparks_l_group.members[i].y = left_wing.y + (Math.random()*30)+30;
                 }
-
-                if(jiggle){
-                    truck_group.members[i].x -= .5;
-                    truck_group.members[i].y -= .5;
-                } else {
-                    truck_group.members[i].x += .5;
-                    truck_group.members[i].y += .5;
+                if(sparks_r_group.members[i].y > FlxG.height){
+                    sparks_r_group.members[i].y = right_wing.y + (Math.random()*30)+30;
                 }
-            }*/
+            }
 
             if(FlxG.mouse.pressed()){
                 FlxG.switchState(new PlayState());
@@ -161,6 +216,20 @@ package{
             rand_tree = Math.floor(Math.random()*6)
             right_tree_x = (Math.random()*50)+210;
             left_tree_x = Math.random()*20;
+        }
+
+        public function boost_speed(all:Boolean):void{
+            if(all){
+                tree_speed += 1;
+                for(i = 0; i < sparks_l_group.length; i++){
+                    spark_r_speed[i] += 2;
+                    spark_l_speed[i] += 2;
+                }
+                truck.play("segment_more_quick");
+            } else {
+                tree_speed += 1;
+                truck.play("segment_quicker");
+            }
         }
     }
 }

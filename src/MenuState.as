@@ -7,7 +7,7 @@ package{
             FlxG.mouse.hide();
 
             var t2:FlxText;
-            t2 = new FlxText(20,220,FlxG.width,"BIG ROAD\nSPACE to play.");
+            t2 = new FlxText(20,220,FlxG.width,"Click to play.");
             t2.size = 14;
             add(t2);
         }
@@ -15,7 +15,7 @@ package{
         override public function update():void{
             super.update();
 
-            if(FlxG.keys.SPACE){
+            if(FlxG.mouse.pressed()){
                 FlxG.switchState(new IntroState());
             }
         }
