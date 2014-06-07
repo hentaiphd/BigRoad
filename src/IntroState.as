@@ -162,17 +162,23 @@ package{
                 timeSec++;
             }
 
-            if(timeSec == 10){
+            if(timeFrame == 7*50){
                 this.add(boost_flash);
                 boost_speed(false);
             }
-            if(timeSec == 12){
+            if(timeFrame == 9*50){
                 boost_flash.kill();
                 left_wing.play("leftwing_flare");
                 right_wing.play("rightwing_flare");
                 this.add(sparks_r);
                 this.add(sparks_l);
-                boost_speed(false);
+                boost_speed(true);
+            }
+            if(timeFrame == 13*50){
+                boost_speed(true);
+            }
+            if(timeSec == 17){
+                FlxG.switchState(new PlayState());
             }
 
             for(i = 0; i < trees_left.length; i++){
@@ -189,10 +195,6 @@ package{
                 if(sparks_r_group.members[i].y > FlxG.height){
                     sparks_r_group.members[i].y = right_wing.y + (Math.random()*30)+30;
                 }
-            }
-
-            if(FlxG.mouse.pressed()){
-                FlxG.switchState(new PlayState());
             }
         }
 
@@ -220,14 +222,14 @@ package{
 
         public function boost_speed(all:Boolean):void{
             if(all){
-                tree_speed += 1;
+                tree_speed += 2;
                 for(i = 0; i < sparks_l_group.length; i++){
                     spark_r_speed[i] += 2;
                     spark_l_speed[i] += 2;
                 }
                 truck.play("segment_more_quick");
             } else {
-                tree_speed += 1;
+                tree_speed += 2;
                 truck.play("segment_quicker");
             }
         }
