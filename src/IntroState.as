@@ -177,7 +177,7 @@ package{
             if(timeFrame == 13*50){
                 boost_speed(true);
             }
-            if(timeSec == 17){
+            if(timeSec == 17 || FlxG.keys.SPACE){
                 FlxG.switchState(new PlayState());
             }
 

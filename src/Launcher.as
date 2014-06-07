@@ -81,14 +81,16 @@ package {
         }
 
         public function setPosition(pos:DHPoint):void {
-            x = pos.x;
-            y = pos.y;
+            if (pos.x > 0 && pos.x < (FlxG.width-50) / FlxG.camera.zoom) {
+                x = pos.x;
+                y = pos.y;
 
-            baseSprite.x = x;
-            baseSprite.y = y;
+                baseSprite.x = x;
+                baseSprite.y = y;
 
-            armSprite.x = x;
-            armSprite.y = y;
+                armSprite.x = x;
+                armSprite.y = y;
+            }
         }
 
         public function launchProjectile():void {

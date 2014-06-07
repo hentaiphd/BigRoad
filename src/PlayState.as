@@ -8,7 +8,8 @@ package
     import Box2D.Common.Math.*;
     import Box2D.Dynamics.Joints.*;
 
-    import flash.display.*;
+    import flash.display.Sprite;
+    import flash.utils.setTimeout;
 
     public class PlayState extends FlxState{
         [Embed(source="../assets/bg.png")] private var ImgBg:Class;
@@ -40,9 +41,7 @@ package
 
             targets = new Array();
             for (var i:int = 0; i < 3; i++) {
-                var t:GroundTarget = new GroundTarget(new DHPoint(40*i, 200));
-                add(t);
-                targets.push(t);
+                addNewTarget();
             }
 
             setupWorld();
@@ -55,7 +54,7 @@ package
             if(new Date().valueOf() - startTime.valueOf() > 6000){
                 FlxG.switchState(new MenuState());
             }
-            debugText.text = (new Date().valueOf() - startTime.valueOf()) + "";
+            timestamp = now.valueOf();
 
             launcher.update();
 
@@ -69,12 +68,27 @@ package
 
             for (var i:Number = 0; i < targets.length; i++) {
                 var tar:GroundTarget = targets[i];
-                launcher.testTargetCollide(tar, projectileTargetCollision);
+                if (tar._active) {
+                    launcher.testTargetCollide(tar, projectileTargetCollision);
+                } else {
+                    targets.splice(targets.indexOf(tar), 1);
+                }
             }
         }
 
         public function projectileTargetCollision(tar:GroundTarget,proj:FlxSprite):void{
-            tar.makeGraphic(15, 15, 0xffff0000);
+            if (tar._active) {
+                tar.makeInactive();
+                setTimeout(addNewTarget, Math.random()*3000);
+            }
+        }
+
+        public function addNewTarget():void {
+            var t:GroundTarget = new GroundTarget(
+                new DHPoint(Math.random()*((FlxG.width-50)/FlxG.camera.zoom),
+                200));
+            add(t);
+            targets.push(t);
         }
 
         private function setupWorld():void{

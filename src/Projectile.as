@@ -44,7 +44,7 @@ package {
             spr.x = x;
             spr.y = y;
 
-            if (x > FlxG.width || x < 0 || y < 0) {
+            if (x > FlxG.width/FlxG.camera.zoom || x < 0 || y < 0) {
                 destroy();
             }
         }
