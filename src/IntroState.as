@@ -12,7 +12,6 @@ package{
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
         public var trees_right:FlxGroup;
-        public var rand_tree:Number;
         public var left_tree_x:Number;
         public var right_tree_x:Number;
         public var tree_speed:Number = 3;
@@ -50,7 +49,7 @@ package{
             road.play("drive");
             this.add(road);
 
-            truck_pos = new FlxPoint(145,30);
+            truck_pos = new FlxPoint(145,10);
 
             left_wing = new WigglySprite(truck_pos.x-25,truck_pos.y+126);
             left_wing.loadGraphic(ImgWings,true,false,32,80);
@@ -121,7 +120,7 @@ package{
 
             //left tress
             for(i = 0; i < 10; i++){
-                calculate_tree_vars();
+                calculate_tree_vars(false);
                 var left_tree_y:Number;
                 if(i > 0){
                     left_tree_y = trees_left.members[i-1].y+trees_left.members[i-1].height;
@@ -130,7 +129,7 @@ package{
                 }
                 tree = new FlxSprite(left_tree_x,left_tree_y);
                 tree.loadGraphic(ImgTree,true,false,70,110);
-                tree.addAnimation("tree",[rand_tree],12,false);
+                tree.addAnimation("tree",[Math.floor(Math.random()*3)+3],12,false);
                 tree.play("tree");
                 trees_left.add(tree);
                 add(tree);
@@ -138,7 +137,7 @@ package{
 
             //right trees
             for(i = 0; i < 10; i++){
-                calculate_tree_vars();
+                calculate_tree_vars(true);
                 var right_tree_y:Number;
 
                 if(i > 0){
@@ -148,7 +147,7 @@ package{
                 }
                 tree = new FlxSprite(right_tree_x,right_tree_y);
                 tree.loadGraphic(ImgTree,true,false,70,110);
-                tree.addAnimation("tree",[rand_tree],12,false);
+                tree.addAnimation("tree",[Math.floor(Math.random()*3)],12,false);
                 tree.play("tree");
                 trees_right.add(tree);
                 add(tree);
@@ -202,22 +201,28 @@ package{
             trees.members[i].y += tree_speed;
             if(trees.members[i].y > FlxG.height){
                 trees.members[i].y = -trees.members[i].height - Math.random()*500;
-                calculate_tree_vars();
-                trees.members[i].addAnimation("tree",[rand_tree],12,false);
-                trees.members[i].play("tree");
 
                 if(i <= 2){
+                    calculate_tree_vars(false);
                     trees.members[i].x = left_tree_x;
+                    trees.members[i].addAnimation("tree",[Math.floor(Math.random()*3)+3],12,false);
+                    trees.members[i].play("tree");
                 } else {
+                    calculate_tree_vars(true);
                     trees.members[i].x = right_tree_x;
+                    trees.members[i].addAnimation("tree",[Math.floor(Math.random()*3)],12,false);
+                    trees.members[i].play("tree");
                 }
             }
         }
 
-        public function calculate_tree_vars():void{
-            rand_tree = Math.floor(Math.random()*6)
-            right_tree_x = (Math.random()*50)+210;
-            left_tree_x = Math.random()*20;
+        public function calculate_tree_vars(dir:Boolean):void{
+            if(dir){ //right 012
+                right_tree_x = (Math.random()*50)+210;
+            } else { //left 345
+                left_tree_x = Math.random()*20;
+            }
+
         }
 
         public function boost_speed(all:Boolean):void{
