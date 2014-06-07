@@ -6,7 +6,7 @@ package{
     public class BigRoad extends FlxGame{
 
         public function BigRoad(){
-            super(640,480,MenuState,1);
+            super(640,480,MenuState,2);
         }
     }
 }
