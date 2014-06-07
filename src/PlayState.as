@@ -34,11 +34,12 @@ package
             setupWorld();
 
             launcher = new Launcher(m_world);
-            add(launcher);
         }
 
         override public function update():void{
             super.update();
+
+            launcher.update();
 
             m_world.Step(1.0/30.0, 10, 10);
             m_world.DrawDebugData();
