@@ -26,8 +26,9 @@ package
         public var launcher:Launcher = null;
 
         public var now:Date;
-        public var timestamp:Number;
         public var startTime:Date;
+
+        public var click_counter:Number = 0;
 
         override public function create():void{
             startTime = new Date();
@@ -51,8 +52,12 @@ package
 
         override public function update():void{
             super.update();
-            if(new Date().valueOf() - startTime.valueOf() > 6000){
-                FlxG.switchState(new MenuState());
+            if(new Date().valueOf() - startTime.valueOf() > 15000){
+                FlxG.switchState(new DriveState());
+            }
+
+            if(FlxG.mouse.justPressed()){
+                click_counter++;
             }
 
             launcher.update();
