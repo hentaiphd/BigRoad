@@ -26,10 +26,10 @@ package
 
         public var now:Date;
         public var timestamp:Number;
+        public var startTime:Date;
 
         override public function create():void{
-            now = new Date();
-            timestamp = now.valueOf();
+            startTime = new Date();
 
             _bg = new FlxSprite(0,0);
             _bg.loadGraphic(ImgBg,false,false,640,480);
@@ -52,8 +52,10 @@ package
 
         override public function update():void{
             super.update();
-            timestamp = now.valueOf();
-            debugText.text = timestamp.toString();
+            if(new Date().valueOf() - startTime.valueOf() > 6000){
+                FlxG.switchState(new MenuState());
+            }
+            debugText.text = (new Date().valueOf() - startTime.valueOf()) + "";
 
             launcher.update();
 
