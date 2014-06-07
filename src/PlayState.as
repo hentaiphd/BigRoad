@@ -30,10 +30,12 @@ package
 
         public var click_counter:Number = 0;
         public var planets_visited:Number = 0;
+        public var plushies_delivered:Number = 0;
 
-        public function PlayState(planet_count:Number = 0):void{
+        public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
             planet_count++;
             planets_visited = planet_count;
+            plushies_delivered = plushie_count;
         }
 
         override public function create():void{
@@ -59,14 +61,14 @@ package
         override public function update():void{
             super.update();
             if(new Date().valueOf() - startTime.valueOf() > 15000){
-                FlxG.switchState(new DriveState(planets_visited));
+                FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
             }
 
             if(FlxG.mouse.justPressed()){
                 click_counter++;
             }
 
-            debugText.text = planets_visited.toString();
+            debugText.text = "Plushies delivered: " + plushies_delivered.toString();
 
             launcher.update();
 
@@ -92,6 +94,7 @@ package
             if (tar._active) {
                 tar.makeInactive();
                 setTimeout(addNewTarget, Math.random()*3000);
+                plushies_delivered++;
             }
         }
 

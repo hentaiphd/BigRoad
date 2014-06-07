@@ -5,10 +5,11 @@ package{
         public var now:Date;
         public var startTime:Date;
         public var planets_visited:Number;
+        public var plushies_delivered:Number;
 
-        public function DriveState(planet_count:Number):void{
-            //pass score?
+        public function DriveState(planet_count:Number, plushie_count:Number):void{
             planets_visited = planet_count;
+            plushies_delivered = plushie_count;
         }
 
         override public function create():void{
@@ -29,7 +30,7 @@ package{
             }
 
             if(new Date().valueOf() - startTime.valueOf() > 5000){
-                FlxG.switchState(new PlayState(planets_visited));
+                FlxG.switchState(new PlayState(planets_visited,plushies_delivered));
             }
 
         }
