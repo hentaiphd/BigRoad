@@ -72,7 +72,9 @@ package {
         public function destroy():void {
             inactive = true;
             FlxG.state.remove(spr);
-            m_world.DestroyBody(body);
+            if (body != null) {
+                m_world.DestroyBody(body);
+            }
         }
     }
 }
