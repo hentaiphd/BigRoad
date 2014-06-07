@@ -19,9 +19,9 @@ package
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
         public var m_world:b2World;
-        public var m_physScale:Number = 30
+        public static var m_physScale:Number = 30
 
-        public var curProjectile:b2Body = null;
+        public var launcher:Launcher = null;
 
         override public function create():void{
             _bg = new FlxSprite(0,0);
@@ -32,6 +32,9 @@ package
             add(debugText);
 
             setupWorld();
+
+            launcher = new Launcher(m_world);
+            add(launcher);
         }
 
         override public function update():void{
@@ -44,28 +47,6 @@ package
             if(timeFrame % 50 == 0){
                 timeSec++;
             }
-
-            if (FlxG.mouse.justReleased()) {
-                launchProjectile();
-            }
-        }
-
-        public function launchProjectile():void {
-            var bd:b2BodyDef = new b2BodyDef();
-            bd.type = b2Body.b2_dynamicBody;
-            var box:b2PolygonShape = new b2PolygonShape();
-            box.SetAsBox(30 / m_physScale, 30 / m_physScale);
-            var fixtureDef:b2FixtureDef = new b2FixtureDef();
-            fixtureDef.shape = box;
-            fixtureDef.density = 1.0;
-            fixtureDef.friction = 0.4;
-            fixtureDef.restitution = 0.9;
-            bd.position.Set(100 / m_physScale, 100 / m_physScale);
-            bd.angle = 3;
-            curProjectile = m_world.CreateBody(bd);
-            curProjectile.CreateFixture(fixtureDef);
-
-            curProjectile.ApplyImpulse(new b2Vec2(10, -40), curProjectile.GetPosition());
         }
 
         private function setupWorld():void{
@@ -102,7 +83,7 @@ package
             //wallB = m_world.CreateBody(wallBd);
             //wallB.CreateFixture2(wall);
             // Bottom
-            wallBd.position.Set(640 / m_physScale / 2, (480 - 95) / m_physScale);
+            wallBd.position.Set(640 / m_physScale / 2, (FlxG.height + 70) / m_physScale);
             wallB = m_world.CreateBody(wallBd);
             wallB.CreateFixture2(wall);
         }
