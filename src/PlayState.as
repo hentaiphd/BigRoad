@@ -29,6 +29,12 @@ package
         public var startTime:Date;
 
         public var click_counter:Number = 0;
+        public var planets_visited:Number = 0;
+
+        public function PlayState(planet_count:Number = 0):void{
+            planet_count++;
+            planets_visited = planet_count;
+        }
 
         override public function create():void{
             startTime = new Date();
@@ -53,12 +59,14 @@ package
         override public function update():void{
             super.update();
             if(new Date().valueOf() - startTime.valueOf() > 15000){
-                FlxG.switchState(new DriveState());
+                FlxG.switchState(new DriveState(planets_visited));
             }
 
             if(FlxG.mouse.justPressed()){
                 click_counter++;
             }
+
+            debugText.text = planets_visited.toString();
 
             launcher.update();
 

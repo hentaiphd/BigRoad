@@ -4,9 +4,11 @@ package{
     public class DriveState extends FlxState{
         public var now:Date;
         public var startTime:Date;
+        public var planets_visited:Number;
 
-        public function DriveState():void{
+        public function DriveState(planet_count:Number):void{
             //pass score?
+            planets_visited = planet_count;
         }
 
         override public function create():void{
@@ -22,8 +24,12 @@ package{
         override public function update():void{
             super.update();
 
+            if(planets_visited >= 5){
+                FlxG.switchState(new MenuState());
+            }
+
             if(new Date().valueOf() - startTime.valueOf() > 5000){
-                FlxG.switchState(new PlayState());
+                FlxG.switchState(new PlayState(planets_visited));
             }
 
         }
