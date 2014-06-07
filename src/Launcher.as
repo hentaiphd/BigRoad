@@ -53,8 +53,8 @@ package {
             setPosition(new DHPoint(FlxG.mouse.x, y));
 
             if(FlxG.mouse.pressed()) {
-                if(timeFrame % 20 == 0) {
-                    throwAngle += (rotateBack ? -1 : 1) * 36;
+                if(timeFrame % 10 == 0) {
+                    throwAngle += (rotateBack ? -1 : 1) * 18;
                 }
                 if (throwAngle >= 180+90) {
                     rotateBack = true;
