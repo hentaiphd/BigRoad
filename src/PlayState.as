@@ -54,7 +54,6 @@ package
             if(new Date().valueOf() - startTime.valueOf() > 6000){
                 FlxG.switchState(new MenuState());
             }
-            timestamp = now.valueOf();
 
             launcher.update();
 
