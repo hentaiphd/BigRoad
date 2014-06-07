@@ -32,7 +32,6 @@ package
             add(debugText);
 
             setupWorld();
-            launchProjectile();
         }
 
         override public function update():void{
@@ -45,6 +44,10 @@ package
             if(timeFrame % 50 == 0){
                 timeSec++;
             }
+
+            if (FlxG.mouse.justReleased()) {
+                launchProjectile();
+            }
         }
 
         public function launchProjectile():void {
@@ -56,10 +59,13 @@ package
             fixtureDef.shape = box;
             fixtureDef.density = 1.0;
             fixtureDef.friction = 0.4;
-            fixtureDef.restitution = 0.1;
+            fixtureDef.restitution = 0.9;
             bd.position.Set(100 / m_physScale, 100 / m_physScale);
+            bd.angle = 3;
             curProjectile = m_world.CreateBody(bd);
             curProjectile.CreateFixture(fixtureDef);
+
+            curProjectile.ApplyImpulse(new b2Vec2(10, -40), curProjectile.GetPosition());
         }
 
         private function setupWorld():void{
