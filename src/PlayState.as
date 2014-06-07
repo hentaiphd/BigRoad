@@ -26,7 +26,7 @@ package
         override public function create():void{
             _bg = new FlxSprite(0,0);
             _bg.loadGraphic(ImgBg,false,false,640,480);
-            //add(_bg);
+            add(_bg);
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
