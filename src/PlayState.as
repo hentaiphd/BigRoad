@@ -21,6 +21,8 @@ package
         public var m_world:b2World;
         public var m_physScale:Number = 30
 
+        public var curProjectile:b2Body = null;
+
         override public function create():void{
             _bg = new FlxSprite(0,0);
             _bg.loadGraphic(ImgBg,false,false,640,480);
@@ -30,6 +32,7 @@ package
             add(debugText);
 
             setupWorld();
+            launchProjectile();
         }
 
         override public function update():void{
@@ -42,6 +45,21 @@ package
             if(timeFrame % 50 == 0){
                 timeSec++;
             }
+        }
+
+        public function launchProjectile():void {
+            var bd:b2BodyDef = new b2BodyDef();
+            bd.type = b2Body.b2_dynamicBody;
+            var box:b2PolygonShape = new b2PolygonShape();
+            box.SetAsBox(30 / m_physScale, 30 / m_physScale);
+            var fixtureDef:b2FixtureDef = new b2FixtureDef();
+            fixtureDef.shape = box;
+            fixtureDef.density = 1.0;
+            fixtureDef.friction = 0.4;
+            fixtureDef.restitution = 0.1;
+            bd.position.Set(100 / m_physScale, 100 / m_physScale);
+            curProjectile = m_world.CreateBody(bd);
+            curProjectile.CreateFixture(fixtureDef);
         }
 
         private function setupWorld():void{
