@@ -96,11 +96,13 @@ package
         }
 
         public function addNewTarget():void {
-            var t:GroundTarget = new GroundTarget(
-                new DHPoint(Math.random()*((FlxG.width-50)/FlxG.camera.zoom),
-                200));
-            add(t);
-            targets.push(t);
+            if(FlxG.state == this) {
+                var t:GroundTarget = new GroundTarget(
+                    new DHPoint(Math.random()*((FlxG.width-50)/FlxG.camera.zoom),
+                    200));
+                add(t);
+                targets.push(t);
+            }
         }
 
         private function setupWorld():void{
