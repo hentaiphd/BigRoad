@@ -12,8 +12,6 @@ package{
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
         public var trees_right:FlxGroup;
-        public var left_tree_x:Number;
-        public var right_tree_x:Number;
         public var tree_speed:Number = 3;
         public var tree:FlxSprite;
         public var i:Number = 0;
@@ -120,14 +118,13 @@ package{
 
             //left tress
             for(i = 0; i < 10; i++){
-                calculate_tree_vars(false);
                 var left_tree_y:Number;
                 if(i > 0){
                     left_tree_y = trees_left.members[i-1].y+trees_left.members[i-1].height;
                 } else {
                     left_tree_y = 0;
                 }
-                tree = new FlxSprite(left_tree_x,left_tree_y);
+                tree = new FlxSprite(getNewTreePos(false),left_tree_y);
                 tree.loadGraphic(ImgTree,true,false,70,110);
                 tree.addAnimation("tree",[Math.floor(Math.random()*3)+3],12,false);
                 tree.play("tree");
@@ -137,15 +134,13 @@ package{
 
             //right trees
             for(i = 0; i < 10; i++){
-                calculate_tree_vars(true);
                 var right_tree_y:Number;
-
                 if(i > 0){
                     right_tree_y = trees_left.members[i-1].y+trees_left.members[i].height;
                 } else {
                     right_tree_y = 0;
                 }
-                tree = new FlxSprite(right_tree_x,right_tree_y);
+                tree = new FlxSprite(getNewTreePos(true),right_tree_y);
                 tree.loadGraphic(ImgTree,true,false,70,110);
                 tree.addAnimation("tree",[Math.floor(Math.random()*3)],12,false);
                 tree.play("tree");
@@ -181,8 +176,11 @@ package{
             }
 
             for(i = 0; i < trees_left.length; i++){
-                update_trees(i,trees_left);
-                update_trees(i,trees_right);
+                update_trees(i,trees_left, false);
+            }
+
+            for(i = 0; i < trees_right.length; i++){
+                update_trees(i,trees_right, true);
             }
 
             for(i = 0; i < sparks_l_group.length; i++){
@@ -197,30 +195,28 @@ package{
             }
         }
 
-        public function update_trees(i:Number,trees:FlxGroup):void{
+        public function update_trees(i:Number,trees:FlxGroup, _right:Boolean):void{
             trees.members[i].y += tree_speed;
             if(trees.members[i].y > FlxG.height){
                 trees.members[i].y = -trees.members[i].height - Math.random()*500;
 
-                if(i <= 2){
-                    calculate_tree_vars(false);
-                    trees.members[i].x = left_tree_x;
+                if(!_right){
+                    trees.members[i].x = getNewTreePos(false);
                     trees.members[i].addAnimation("tree",[Math.floor(Math.random()*3)+3],12,false);
                     trees.members[i].play("tree");
                 } else {
-                    calculate_tree_vars(true);
-                    trees.members[i].x = right_tree_x;
+                    trees.members[i].x = getNewTreePos(true);
                     trees.members[i].addAnimation("tree",[Math.floor(Math.random()*3)],12,false);
                     trees.members[i].play("tree");
                 }
             }
         }
 
-        public function calculate_tree_vars(dir:Boolean):void{
+        public function getNewTreePos(dir:Boolean):Number{
             if(dir){ //right 012
-                right_tree_x = (Math.random()*50)+210;
+                return (Math.random()*50)+210;
             } else { //left 345
-                left_tree_x = Math.random()*20;
+                return Math.random()*20;
             }
 
         }
