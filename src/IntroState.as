@@ -224,8 +224,8 @@ package{
             if(all){
                 tree_speed += 2;
                 for(i = 0; i < sparks_l_group.length; i++){
-                    spark_r_speed[i] += 2;
-                    spark_l_speed[i] += 2;
+                    spark_r_speed_group[i] += 2;
+                    spark_l_speed_group[i] += 2;
                 }
                 truck.play("segment_more_quick");
             } else {

@@ -24,7 +24,13 @@ package
 
         public var launcher:Launcher = null;
 
+        public var now:Date;
+        public var timestamp:Number;
+
         override public function create():void{
+            now = new Date();
+            timestamp = now.valueOf();
+
             _bg = new FlxSprite(0,0);
             _bg.loadGraphic(ImgBg,false,false,640,480);
             add(_bg);
@@ -46,6 +52,8 @@ package
 
         override public function update():void{
             super.update();
+            timestamp = now.valueOf();
+            debugText.text = timestamp.toString();
 
             launcher.update();
 
