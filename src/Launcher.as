@@ -75,8 +75,6 @@ package {
             }
             curProjectile.update(new FlxPoint(x, y), throwAngle);
 
-            debugText.text = "" + projectiles.length;
-
             if (FlxG.mouse.justReleased()) {
                 launchProjectile();
             }
