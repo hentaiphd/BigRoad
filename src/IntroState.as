@@ -213,9 +213,9 @@ package{
         }
 
         public function getNewTreePos(dir:Boolean):Number{
-            if(dir){ //right 012
+            if(dir){
                 return (Math.random()*50)+210;
-            } else { //left 345
+            } else {
                 return Math.random()*20;
             }
 

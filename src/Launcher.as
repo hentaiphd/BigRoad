@@ -63,6 +63,8 @@ package {
                 }
             }
 
+            armSprite.x = baseSprite.x + 10*Math.sin(throwAngle * (Math.PI/180));
+            armSprite.y = baseSprite.y + 10*Math.cos(throwAngle * (Math.PI/180));
             armSprite.angle = 180 - throwAngle;
 
             for (var i:int = 0; i < projectiles.length; i++) {
