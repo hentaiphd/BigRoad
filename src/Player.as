@@ -68,7 +68,6 @@ package
                 var turnAngle:Number;
                 turnAngle = angleToTarget / 90;
 
-                this._angle = angleToTarget;
                 this.flightDirection = new DHPoint(Math.sin(turnAngle)*3, Math.cos(turnAngle)*3);
                 this.flightDirection = new DHPoint(xDisp*.1, yDisp*.1);
 
@@ -80,7 +79,6 @@ package
             }
 
             this.angle = _angle*(180/Math.PI)*-1;
-            this._angle %= 2*Math.PI;
         }
 
         public function arrowPressed(_left:Boolean=true):void {
