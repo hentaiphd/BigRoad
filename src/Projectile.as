@@ -11,6 +11,7 @@ package {
         public var body:b2Body = null;
         public var spr:FlxSprite = null;
         public var m_world:b2World;
+        public var inactive:Boolean = false;
 
         public var x:Number, y:Number;
         public var width:Number, height:Number;
@@ -42,6 +43,10 @@ package {
 
             spr.x = x;
             spr.y = y;
+
+            if (x > FlxG.width || x < 0 || y < 0) {
+                destroy();
+            }
         }
 
         public function launch(angle:Number):void {
@@ -62,6 +67,12 @@ package {
             var vel:b2Vec2 = new b2Vec2(2*Math.sin(angle * (Math.PI/180)),
                                         2*Math.cos(angle * (Math.PI/180)));
             body.ApplyImpulse(vel, body.GetPosition());
+        }
+
+        public function destroy():void {
+            inactive = true;
+            FlxG.state.remove(spr);
+            m_world.DestroyBody(body);
         }
     }
 }

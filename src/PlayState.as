@@ -20,6 +20,7 @@ package
         public var timeSec:Number = 0;
         public var m_world:b2World;
         public static var m_physScale:Number = 30
+        public var targets:Array;
 
         public var launcher:Launcher = null;
 
@@ -30,6 +31,13 @@ package
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
+
+            targets = new Array();
+            for (var i:int = 0; i < 3; i++) {
+                var t:GroundTarget = new GroundTarget(new DHPoint(40*i, 200));
+                add(t);
+                targets.push(t);
+            }
 
             setupWorld();
 
@@ -48,6 +56,15 @@ package
             if(timeFrame % 50 == 0){
                 timeSec++;
             }
+
+            for (var i:Number = 0; i < targets.length; i++) {
+                var tar:GroundTarget = targets[i];
+                launcher.testTargetCollide(tar, projectileTargetCollision);
+            }
+        }
+
+        public function projectileTargetCollision(tar:GroundTarget,proj:FlxSprite):void{
+            tar.makeGraphic(15, 15, 0xffff0000);
         }
 
         private function setupWorld():void{

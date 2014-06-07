@@ -7,8 +7,9 @@ package {
     import Box2D.Common.Math.*;
     import Box2D.Dynamics.Joints.*;
 
+    import mx.utils.ObjectUtil;
+
     public class Launcher extends FlxSprite{
-        public var curProjectile:b2Body = null;
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
         public var m_world:b2World;
@@ -16,15 +17,17 @@ package {
         public var baseSprite:FlxSprite;
         public var armSprite:FlxSprite;
         public var projectiles:Array;
+        public var curProjectile:Projectile;
 
         public var throwAngle:Number = 90;
         public var rotateBack:Boolean = false;
 
+        public var debugText:FlxText;
+
         public function Launcher(world:b2World) {
             m_world = world;
             projectiles = new Array();
-            var p:Projectile = new Projectile(m_world);
-            projectiles.push(p);
+            curProjectile = new Projectile(m_world);
 
             x = 20;
             y = 50;
@@ -36,6 +39,9 @@ package {
             armSprite = new FlxSprite(x, y);
             armSprite.makeGraphic(5, 15, 0xff00ff00);
             FlxG.state.add(armSprite);
+
+            debugText = new FlxText(10,10,100,"");
+            FlxG.state.add(debugText);
         }
 
         override public function update():void {
@@ -62,7 +68,14 @@ package {
             for (var i:int = 0; i < projectiles.length; i++) {
                 var projectile:Projectile = projectiles[i];
                 projectile.update(new FlxPoint(x, y), throwAngle);
+
+                if (projectile.inactive) {
+                    projectiles.splice(projectiles.indexOf(projectile), 1);
+                }
             }
+            curProjectile.update(new FlxPoint(x, y), throwAngle);
+
+            debugText.text = "" + projectiles.length;
 
             if (FlxG.mouse.justReleased()) {
                 launchProjectile();
@@ -81,12 +94,34 @@ package {
         }
 
         public function launchProjectile():void {
-            if (projectiles.length > 0) {
-                var p:Projectile = projectiles[projectiles.length - 1];
-                p.launch(throwAngle);
+            curProjectile.launch(throwAngle);
+            projectiles.push(curProjectile);
+            curProjectile = new Projectile(m_world);
+        }
+
+        public function testTargetCollide(tar:GroundTarget, _callback:Function):void {
+            for (var j:Number = 0; j < projectiles.length; j++) {
+                var proj:FlxSprite = projectiles[j].spr;
+                FlxG.overlap(tar, proj, _callback);
+                FlxG.overlap(tar, proj, targetCollide);
             }
-            var projectile:Projectile = new Projectile(m_world);
-            projectiles.push(projectile);
+        }
+
+        public function targetCollide(tar:GroundTarget, p:FlxSprite):void {
+            var proj:Projectile = getProjectileFromSprite(p);
+            if (proj) {
+                proj.destroy();
+            }
+        }
+
+        public function getProjectileFromSprite(spr:FlxSprite):Projectile {
+            for(var i:int = 0; i < projectiles.length; i++) {
+                var p:Projectile = projectiles[i];
+                if (p.spr == spr) {
+                    return p;
+                }
+            }
+            return null;
         }
     }
 }
