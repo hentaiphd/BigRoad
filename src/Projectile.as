@@ -29,7 +29,7 @@ package {
             m_world = world;
         }
 
-        public function update(origin:FlxPoint, launchAngle:Number):void {
+        public function update(origin:FlxPoint=null, launchAngle:Number=0):void {
             spr.update();
 
             if (body != null) {

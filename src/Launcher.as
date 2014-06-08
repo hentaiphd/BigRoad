@@ -21,6 +21,9 @@ package {
 
         public var throwAngle:Number = 90;
         public var rotateBack:Boolean = false;
+        public var armForward:Boolean = false;
+        public var armDrawAngle:Number;
+        public var thisThrowAngle:Number;
 
         public var debugText:FlxText;
 
@@ -52,33 +55,54 @@ package {
 
             setPosition(new DHPoint(FlxG.mouse.x, y));
 
-            if(FlxG.mouse.pressed()) {
-                if(timeFrame % 10 == 0) {
-                    throwAngle += (rotateBack ? -1 : 1) * 18;
+            if (armForward) {
+                if (armDrawAngle < thisThrowAngle) {
+                    if (timeFrame % 2 == 0) {
+                        armDrawAngle += 20;
+                    }
+                } else {
+                    launchProjectile(armDrawAngle);
+                    armForward = false;
+                    armDrawAngle = throwAngle;
                 }
-                if (throwAngle >= 180+90) {
-                    rotateBack = true;
-                } else if(throwAngle <= 90) {
-                    rotateBack = false;
+            } else {
+                if(FlxG.mouse.pressed()) {
+                    if(timeFrame % 5 == 0) {
+                        throwAngle += (rotateBack ? -1 : 1) * 18;
+                    }
+                    if (throwAngle >= 180+90) {
+                        rotateBack = true;
+                    } else if(throwAngle <= 90) {
+                        rotateBack = false;
+                    }
+                    armDrawAngle = throwAngle;
+                } else {
+                    armDrawAngle = 90;
                 }
             }
 
-            armSprite.x = baseSprite.x + 10*Math.sin(throwAngle * (Math.PI/180));
-            armSprite.y = baseSprite.y + 10*Math.cos(throwAngle * (Math.PI/180));
-            armSprite.angle = 180 - throwAngle;
+            armSprite.x = baseSprite.x + 10*Math.sin(armDrawAngle * (Math.PI/180));
+            armSprite.y = baseSprite.y + 10*Math.cos(armDrawAngle * (Math.PI/180));
+            armSprite.angle = 180 - armDrawAngle;
+            curProjectile.update(new FlxPoint(x, y), armDrawAngle);
 
             for (var i:int = 0; i < projectiles.length; i++) {
                 var projectile:Projectile = projectiles[i];
-                projectile.update(new FlxPoint(x, y), throwAngle);
+                projectile.update();
 
                 if (projectile.inactive) {
                     projectiles.splice(projectiles.indexOf(projectile), 1);
                 }
             }
-            curProjectile.update(new FlxPoint(x, y), throwAngle);
 
             if (FlxG.mouse.justReleased()) {
-                launchProjectile();
+                armForward = true;
+                thisThrowAngle = throwAngle + 180;
+                armDrawAngle = throwAngle;
+            }
+
+            if (FlxG.mouse.justPressed()) {
+                throwAngle = 90;
             }
         }
 
@@ -95,8 +119,8 @@ package {
             }
         }
 
-        public function launchProjectile():void {
-            curProjectile.launch(throwAngle);
+        public function launchProjectile(angle:Number):void {
+            curProjectile.launch(angle);
             projectiles.push(curProjectile);
             curProjectile = new Projectile(m_world);
         }
