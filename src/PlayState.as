@@ -94,13 +94,15 @@ package
 
             launcher = new Launcher(m_world);
 
-            smoke = new FlxSprite(0, 0);
-            smoke.makeGraphic(320, 240, 0xaa000000);
-            add(smoke);
+            if (planets_visited == 1) {
+                smoke = new FlxSprite(0, 0);
+                smoke.makeGraphic(320, 240, 0xaa000000);
+                add(smoke);
 
-            help_text = new FlxSprite(20,100);
-            help_text.loadGraphic(ImgHelp,false,false,228,48);
-            add(help_text);
+                help_text = new FlxSprite(20,100);
+                help_text.loadGraphic(ImgHelp,false,false,228,48);
+                add(help_text);
+            }
 
             starting_mouse_x = FlxG.mouse.x;
 
@@ -117,11 +119,13 @@ package
         override public function update():void{
             super.update();
 
-            if (FlxG.mouse.x != starting_mouse_x) {
-                remove(smoke);
-                remove(help_text);
-                if (startTime == -1) {
-                    startTime = new Date().valueOf();
+            if (planets_visited == 1) {
+                if (FlxG.mouse.x != starting_mouse_x) {
+                    remove(smoke);
+                    remove(help_text);
+                    if (startTime == -1) {
+                        startTime = new Date().valueOf();
+                    }
                 }
             }
 
@@ -131,13 +135,14 @@ package
                 for(i = 0; i < targets.length; i++){
                     targets[i].alpha += .01;
                 }
+                if (planetCloseSprite.alpha == 1) {
+                    fadein = false;
+                }
             }
 
             var cur_time:Number = new Date().valueOf();
             if (startTime != -1) {
-                if(cur_time - startTime > 5000){
-                    fadein = false;
-                } else if(cur_time - startTime > 15000){
+                if(cur_time - startTime > 15000){
                     _active = false;
                     planetCloseSprite.alpha -= .01;
                     launcher._active = false;
@@ -146,7 +151,8 @@ package
                         targets[i].alpha -= .01;
                     }
                     truckSprite.play("idle");
-                } else if(cur_time - startTime > 17000){
+                }
+                if(cur_time - startTime > 17000){
                     FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
                 }
             }
@@ -154,8 +160,6 @@ package
             if(FlxG.mouse.justPressed()){
                 click_counter++;
             }
-
-            debugText.text = "Plushies delivered: " + plushies_delivered.toString() + "\nPlanets visited: " + planets_visited.toString();
 
             launcher.update();
 
