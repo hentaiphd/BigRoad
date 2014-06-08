@@ -8,6 +8,7 @@ package{
         [Embed(source="../assets/wings.png")] private var ImgWings:Class;
         [Embed(source="../assets/boostflash.png")] private var ImgBoost:Class;
         [Embed(source="../assets/sparks.png")] private var ImgSparks:Class;
+        [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
 
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
@@ -146,6 +147,15 @@ package{
                 tree.play("tree");
                 trees_right.add(tree);
                 add(tree);
+            }
+
+            if(FlxG.music == null){
+                FlxG.playMusic(SndBGM);
+            } else {
+                FlxG.music.resume();
+                if(!FlxG.music.active){
+                    FlxG.playMusic(SndBGM);
+                }
             }
         }
 

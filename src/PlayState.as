@@ -17,6 +17,7 @@ package
         [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose:Class;
         [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
+        [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
 
         public var _bg:FlxSprite;
         public var debugText:FlxText;
@@ -74,6 +75,15 @@ package
             setupWorld();
 
             launcher = new Launcher(m_world);
+
+            if(FlxG.music == null){
+                FlxG.playMusic(SndBGM);
+            } else {
+                FlxG.music.resume();
+                if(!FlxG.music.active){
+                    FlxG.playMusic(SndBGM);
+                }
+            }
         }
 
         override public function update():void{

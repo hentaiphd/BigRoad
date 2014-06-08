@@ -6,6 +6,8 @@ package{
         [Embed(source="../assets/truckfront.png")] private var ImgTruck:Class;
         [Embed(source="../assets/holopres.png")] private var ImgDashPres:Class;
         [Embed(source="../assets/holopresface.png")] private var ImgPres:Class;
+        [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
+
         public var now:Date;
         public var startTime:Date;
 
@@ -47,6 +49,14 @@ package{
             this.add(pres_icon);
             pres_icon.alpha = 0;
 
+            if(FlxG.music == null){
+                FlxG.playMusic(SndBGM);
+            } else {
+                FlxG.music.resume();
+                if(!FlxG.music.active){
+                    FlxG.playMusic(SndBGM);
+                }
+            }
         }
 
         override public function update():void{
