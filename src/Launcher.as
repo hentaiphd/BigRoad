@@ -128,7 +128,10 @@ package {
             armForward = false;
             launchLock = false;
             armDrawAngle = throwAngle;
-            baseSprite.play("rest");
+            try {
+                baseSprite.play("rest");
+            } catch (err:Error) {
+            }
             armSprite.visible = false;
         }
 

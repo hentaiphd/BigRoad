@@ -91,7 +91,7 @@ package
             launcher.update();
 
             m_world.Step(1.0/30.0, 10, 10);
-            m_world.DrawDebugData();
+            //m_world.DrawDebugData();
 
             timeFrame++;
             if(timeFrame % 50 == 0){
