@@ -16,7 +16,7 @@ package{
             super.update();
 
             if(FlxG.mouse.pressed()){
-                FlxG.switchState(new DriveState(0,0));
+                FlxG.switchState(new IntroState(0,0));
             }
         }
     }
