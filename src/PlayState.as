@@ -14,7 +14,8 @@ package
     public class PlayState extends FlxState{
         [Embed(source="../assets/space1.png")] private var ImgBg:Class;
         [Embed(source="../assets/gametruck.png")] private var ImgTruck:Class;
-        [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose:Class;
+        [Embed(source="../assets/planet_close_lisafrank.png")] private var ImgPlanetClose1:Class;
+        [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose2:Class;
         [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
@@ -60,9 +61,17 @@ package
             add(truckSprite);
             truckSprite.play("idle");
 
-            planetCloseSprite = new FlxSprite(0, 140);
-            planetCloseSprite.loadGraphic(ImgPlanetClose, true, true, 320, 100, true);
-            add(planetCloseSprite);
+            if(planets_visited == 1){
+                planetCloseSprite = new FlxSprite(0, 140);
+                planetCloseSprite.loadGraphic(ImgPlanetClose1, true, true, 320, 100, true);
+                add(planetCloseSprite);
+            }
+            if(planets_visited == 2){
+                planetCloseSprite = new FlxSprite(0, 140);
+                planetCloseSprite.loadGraphic(ImgPlanetClose2, true, true, 320, 100, true);
+                add(planetCloseSprite);
+
+            }
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
@@ -88,7 +97,7 @@ package
 
         override public function update():void{
             super.update();
-            if(new Date().valueOf() - startTime.valueOf() > 15000){
+            if(new Date().valueOf() - startTime.valueOf() > 25000){
                 FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
             }
 
@@ -130,7 +139,7 @@ package
             if(FlxG.state == this) {
                 var t:GroundTarget = new GroundTarget(
                     new DHPoint(Math.random()*((FlxG.width-50)/FlxG.camera.zoom),
-                    200));
+                    177),planets_visited);
                 add(t);
                 targets.push(t);
             }
