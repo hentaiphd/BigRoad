@@ -22,14 +22,19 @@ package {
         public var projectiles:Array;
         public var curProjectile:Projectile;
 
-        public var throwAngle:Number;
         public var rotateBack:Boolean = false;
-        public var launchLock:Boolean = false;
-        public var armForward:Boolean = false;
         public var armDrawAngle:Number;
         public var thisThrowAngle:Number;
         public var throwStartAngle:Number;
-        public var throwAngleArc:Number;
+        public var armDrawAngleArc:Number;
+        public var lastLaunchTime:Number = 0;
+
+        public static const STATE_WINDUP:Number = 0;
+        public static const STATE_RELEASE:Number = 1;
+        public static const STATE_IDLE:Number = 2;
+        public static const STATE_COOLDOWN:Number = 3;
+        public static const STATE_WIGGLE:Number = 4;
+        public var _state:Number = STATE_IDLE;
 
         public var _active:Boolean = true;
 
@@ -44,8 +49,8 @@ package {
             x = 20;
             y = 50;
 
-            throwStartAngle = throwAngle = 135;
-            throwAngleArc = 90;
+            throwStartAngle = armDrawAngle = 135;
+            armDrawAngleArc = 45;
 
             baseSprite = new FlxSprite(x, y);
             baseSprite.loadGraphic(ImgDad, true, true, 48, 48, true);
@@ -85,35 +90,50 @@ package {
 
             setPosition(new DHPoint(FlxG.mouse.x, y));
 
-            if (armForward) {
-                if (armDrawAngle < thisThrowAngle) {
-                    if (timeFrame % 2 == 0) {
-                        armDrawAngle += 30;
-                    }
-                } else {
-                    if (!launchLock) {
-                        launchProjectile(armDrawAngle);
-                        launchLock = true;
-                    }
-                    setTimeout(resetArm, 100);
-                }
-            } else {
+            if (_state == STATE_IDLE) {
                 if(FlxG.mouse.pressed()) {
+                    _state = STATE_WINDUP;
                     baseSprite.play("throw");
                     armSprite.visible = true;
-                    if(timeFrame % 5 == 0) {
-                        throwAngle += (rotateBack ? -1 : 1) * 25;
+                    armDrawAngle = 0;
+                }
+            } else if (_state == STATE_WIGGLE) {
+                if (!FlxG.mouse.pressed()) {
+                    _state = STATE_RELEASE;
+                    thisThrowAngle = armDrawAngle + 180;
+                }
+                if(timeFrame % 3 == 0) {
+                    armDrawAngle += (rotateBack ? -1 : 1) * 25;
+                }
+                if (armDrawAngle >= throwStartAngle + armDrawAngleArc) {
+                    rotateBack = true;
+                } else if(armDrawAngle <= throwStartAngle) {
+                    rotateBack = false;
+                }
+            } else if (_state == STATE_WINDUP) {
+                if(timeFrame % 5 == 0) {
+                    armDrawAngle -= 30;
+                }
+                if (armDrawAngle < 0) {
+                    armDrawAngle = 360 + armDrawAngle;
+                }
+                if (armDrawAngle > throwStartAngle && armDrawAngle < throwStartAngle + armDrawAngleArc) {
+                    _state = STATE_WIGGLE;
+                }
+            } else if (_state == STATE_RELEASE) {
+                if (armDrawAngle < thisThrowAngle) {
+                    if (timeFrame % 2 == 0) {
+                        armDrawAngle += 50;
                     }
-                    if (throwAngle >= throwStartAngle + throwAngleArc) {
-                        rotateBack = true;
-                    } else if(throwAngle <= throwStartAngle) {
-                        rotateBack = false;
-                    }
-                    armDrawAngle = throwAngle;
-                } else if (FlxG.mouse.justReleased()) {
-                    armForward = true;
-                    thisThrowAngle = throwAngle + 180;
-                    armDrawAngle = throwAngle;
+                } else {
+                    launchProjectile(armDrawAngle);
+                    lastLaunchTime = timeFrame;
+                    _state = STATE_COOLDOWN;
+                }
+            } else if (_state == STATE_COOLDOWN) {
+                if (timeFrame - lastLaunchTime == 30) {
+                    _state = STATE_IDLE;
+                    resetArm();
                 }
             }
 
@@ -124,9 +144,6 @@ package {
         }
 
         public function resetArm():void {
-            armForward = false;
-            launchLock = false;
-            armDrawAngle = throwAngle;
             try {
                 baseSprite.play("rest");
             } catch (err:Error) {
