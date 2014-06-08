@@ -46,6 +46,9 @@ package{
         public var apt_bg:FlxSprite;
         public var space_bg:FlxSprite;
 
+        public var friend_text:FlxText;
+        public var girl_text:FlxText;
+
         public var time_frame:Number = 0;
         public var time_sec:Number = 0;
         public static const _fps:Number = 50;
@@ -194,6 +197,14 @@ package{
             this.add(apt_bg);
             apt_bg.play("no_bubble");
 
+            friend_text = new FlxText(30, 35, 200, "My dad and I went on a fishing trip yesterday! It was so fun!\n...\nHave you ever gone fishing with your dad?");
+            friend_text.alpha = 0;
+            add(friend_text);
+
+            girl_text = new FlxText(100, 60, 200, "No. My parents are divorced. My dad's a truck driver, so he doesn't visit much");
+            girl_text.alpha = 0;
+            add(girl_text);
+
             black_bg = new FlxSprite(0,0);
             black_bg.makeGraphic(320,480,0xff000000);
             this.add(black_bg);
@@ -214,14 +225,19 @@ package{
                 if (shouldIncrementScene()) {
                     if (current_scene == 0) {
                         apt_bg.play("friend_bubble");
-                        incrementScene();
+                        friend_text.alpha = 1;
+                        incrementScene(5*_fps);
                     } else if (current_scene == 1) {
                         apt_bg.play("girl_bubble");
-                        incrementScene();
+                        friend_text.alpha = 0;
+                        girl_text.alpha = 1;
+                        incrementScene(5*_fps);
                     } else if (current_scene == 2) {
                         incrementScene();
                     } else if (current_scene == 3) {
                         apt_bg.alpha = 0;
+                        girl_text.alpha = 0;
+                        girl_text.text = "He's always working, somewhere far away...";
                         changeState(STATE_TRUCK1, 8*_fps);
                     }
                 } else {
@@ -257,11 +273,13 @@ package{
                         incrementScene();
                     } else if (current_scene == 2) {
                         apt_bg.alpha = 0;
+                        girl_text.alpha = 0;
                         changeState(STATE_TRUCK2, 5*_fps);
                     }
                 } else {
                     if (current_scene == 0) {
                         black_bg.alpha -= .01;
+                        girl_text.alpha += .01;
                     } else if (current_scene == 1) {
                         black_bg.alpha += .01;
                     } else if (current_scene == 2) {
