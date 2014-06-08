@@ -170,15 +170,6 @@ package{
                 add(tree);
             }
 
-            if(FlxG.music == null){
-                FlxG.playMusic(SndBGM);
-            } else {
-                FlxG.music.resume();
-                if(!FlxG.music.active){
-                    FlxG.playMusic(SndBGM);
-                }
-            }
-
             apt_bg = new FlxSprite(0,0);
             apt_bg.loadGraphic(ImgAptBg,true,false,320,480);
             apt_bg.addAnimation("no_bubble",[0],12,false);
@@ -263,6 +254,14 @@ package{
             } else if (current_state == STATE_TRUCK2) {
                 if (shouldIncrementScene()) {
                     if (current_scene == 0) {
+                        if(FlxG.music == null){
+                            FlxG.playMusic(SndBGM);
+                        } else {
+                            FlxG.music.resume();
+                            if(!FlxG.music.active){
+                                FlxG.playMusic(SndBGM);
+                            }
+                        }
                         incrementScene();
                     } else if (current_scene == 1) {
                         this.add(boost_flash);

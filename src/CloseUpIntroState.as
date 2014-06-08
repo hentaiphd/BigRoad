@@ -7,7 +7,6 @@ package{
         [Embed(source="../assets/holopres.png")] private var ImgDashPres:Class;
         [Embed(source="../assets/holopresface.png")] private var ImgPres:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
-        [Embed(source="../assets/nulshock.ttf", fontFamily="nulshock", embedAsCFF="false")] public var FontHud:String;
 
         public var now:Date;
         public var startTime:Date;
