@@ -14,8 +14,7 @@ package
     public class PlayState extends FlxState{
         [Embed(source="../assets/space1.png")] private var ImgBg:Class;
         [Embed(source="../assets/gametruck.png")] private var ImgTruck:Class;
-        [Embed(source="../assets/planet_close_lisafrank.png")] private var ImgPlanetClose1:Class;
-        [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose2:Class;
+        [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose:Class;
         [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
@@ -65,14 +64,11 @@ package
             truckSprite.play("open");
             truckSprite.alpha = 0;
 
-            planetCloseSprite = new FlxSprite(0, 140);
-            if(planets_visited == 1){
-                planetCloseSprite.loadGraphic(ImgPlanetClose1, true, true, 320, 100, true);
-            }
-            if(planets_visited == 2){
-                planetCloseSprite.loadGraphic(ImgPlanetClose2, true, true, 320, 100, true);
-
-            }
+            planetCloseSprite = new FlxSprite(0, 80);
+            planetCloseSprite.loadGraphic(ImgPlanetClose, true, true, 320, 160, true);
+            planetCloseSprite.addAnimation("1", [0], 1, false);
+            planetCloseSprite.addAnimation("2", [1], 1, false);
+            planetCloseSprite.play(planets_visited + "");
             add(planetCloseSprite);
             planetCloseSprite.alpha = 0;
 
