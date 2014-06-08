@@ -148,6 +148,11 @@ package {
             }
         }
 
+        public function fadeOut():void{
+            baseSprite.alpha -= .01;
+            armSprite.alpha -= .01;
+        }
+
         public function launchProjectile(angle:Number):void {
             curProjectile.launch(angle);
             projectiles.push(curProjectile);

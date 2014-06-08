@@ -30,7 +30,6 @@ package
 
         public var launcher:Launcher = null;
         public var truckSprite:FlxSprite;
-        public var planetSprite:FlxSprite;
         public var planetCloseSprite:FlxSprite;
 
         public var now:Date;
@@ -97,7 +96,24 @@ package
 
         override public function update():void{
             super.update();
-            if(new Date().valueOf() - startTime.valueOf() > 25000){
+            if(new Date().valueOf() - startTime.valueOf() > 15000){
+                //30,150
+                planetCloseSprite.alpha -= .01;
+                launcher.fadeOut();
+                for (i = 0; i < targets.length; i++) {
+                    targets[i].alpha -= .01;
+                }
+            }
+            if(new Date().valueOf() - startTime.valueOf() > 17000){
+                truckSprite.play("boost");
+                if(truckSprite.x > 30){
+                    truckSprite.x -= .5;
+                }
+                if(truckSprite.y < 150){
+                    truckSprite.y += .5;
+                }
+            }
+            if(truckSprite.x == 30 && truckSprite.y == 150){
                 FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
             }
 
