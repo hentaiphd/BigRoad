@@ -121,7 +121,7 @@ package{
 
             if(current_text == 1){
                 pres_text.alpha += .01;
-                pres_text.text = "Space Dad... I have a very important mission for you.";
+                pres_text.text = "Space Dad... Space President here. I have a very important mission for you.";
             } else if(current_text == 2){
                 pres_text.text = "I have received secret intelligence that the Bee Empire is planning an assault.";
             } else if(current_text == 3){
