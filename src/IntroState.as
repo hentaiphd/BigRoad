@@ -40,6 +40,7 @@ package{
         public var spark_r_speed_group:Array = new Array();
 
         public var earth_sprite:FlxSprite;
+        public var float:String;
 
         public var black_bg:FlxSprite;
         public var apt_bg:FlxSprite;
@@ -314,6 +315,7 @@ package{
                         fadeTrees();
                         earth_sprite.scale.x -= .005;
                         earth_sprite.scale.y -= .005;
+                        floatSpaceBG();
                     } else if (current_scene == 6) {
                         earth_sprite.scale.x -= .001;
                         earth_sprite.scale.y -= .001;
@@ -388,6 +390,21 @@ package{
                     trees.members[i].addAnimation("tree",[Math.floor(Math.random()*3)],12,false);
                     trees.members[i].play("tree");
                 }
+            }
+        }
+
+        public function floatSpaceBG():void {
+            if(space_bg.y < -10){
+                float = "down";
+            } else if(space_bg.y > 10){
+                float = "up";
+            }
+
+            if(float == "up"){
+                space_bg.y -= .1;
+            }
+            if(float == "down"){
+                space_bg.y += .1;
             }
         }
 

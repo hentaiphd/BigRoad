@@ -17,6 +17,10 @@ package{
         public var pres_icon:FlxSprite;
         public var pres_box:FlxSprite;
 
+        public static const _fps:Number = 50;
+        public var last_switch_time:Number = 0;
+        public var time_frame:Number = 0;
+
         public var pres_text:FlxText;
         public var current_text:Number = 0;
         public var float:String = "up";
@@ -77,7 +81,7 @@ package{
 
         override public function update():void{
             super.update();
-            debug_text.text = current_text + "";
+            time_frame++;
 
             if(bg.y < -10){
                 float = "down";
@@ -104,12 +108,14 @@ package{
                 }
                 if(current_text < 1){
                     current_text++;
+                    last_switch_time = time_frame;
                 }
             }
 
             if(current_text >= 1){
-                if(FlxG.mouse.justPressed()){
+                if(FlxG.mouse.justPressed() || time_frame - last_switch_time > 5*_fps){
                     current_text++;
+                    last_switch_time = time_frame;
                 }
             }
 
