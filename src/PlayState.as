@@ -13,6 +13,9 @@ package
 
     public class PlayState extends FlxState{
         [Embed(source="../assets/space1.png")] private var ImgBg:Class;
+        [Embed(source="../assets/gametruck.png")] private var ImgTruck:Class;
+        [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose:Class;
+        [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
 
         public var _bg:FlxSprite;
@@ -24,6 +27,9 @@ package
         public var targets:Array;
 
         public var launcher:Launcher = null;
+        public var truckSprite:FlxSprite;
+        public var planetSprite:FlxSprite;
+        public var planetCloseSprite:FlxSprite;
 
         public var now:Date;
         public var startTime:Date;
@@ -44,6 +50,18 @@ package
             _bg = new FlxSprite(0,0);
             _bg.loadGraphic(ImgBg,false,false,640,480);
             add(_bg);
+
+            truckSprite = new FlxSprite(100, 20);
+            truckSprite.loadGraphic(ImgTruck, true, true, 100, 64, true);
+            truckSprite.addAnimation("idle", [0], 1, false);
+            truckSprite.addAnimation("open", [1], 1, false);
+            truckSprite.addAnimation("boost", [2, 3, 4], 12, true);
+            add(truckSprite);
+            truckSprite.play("idle");
+
+            planetCloseSprite = new FlxSprite(0, 140);
+            planetCloseSprite.loadGraphic(ImgPlanetClose, true, true, 320, 100, true);
+            add(planetCloseSprite);
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
