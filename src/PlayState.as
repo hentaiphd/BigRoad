@@ -12,7 +12,7 @@ package
     import flash.utils.setTimeout;
 
     public class PlayState extends FlxState{
-        [Embed(source="../assets/bg.png")] private var ImgBg:Class;
+        [Embed(source="../assets/space1.png")] private var ImgBg:Class;
         [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
 
         public var _bg:FlxSprite;
