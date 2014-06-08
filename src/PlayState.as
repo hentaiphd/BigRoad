@@ -39,6 +39,8 @@ package
         public var planets_visited:Number = 0;
         public var plushies_delivered:Number = 0;
 
+        public var fadein:Boolean = true;
+
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
             planet_count++;
             planets_visited = planet_count;
@@ -58,19 +60,19 @@ package
             truckSprite.addAnimation("open", [1], 1, false);
             truckSprite.addAnimation("boost", [2, 3, 4], 12, true);
             add(truckSprite);
-            truckSprite.play("idle");
+            truckSprite.play("open");
+            truckSprite.alpha = 0;
 
+            planetCloseSprite = new FlxSprite(0, 140);
             if(planets_visited == 1){
-                planetCloseSprite = new FlxSprite(0, 140);
                 planetCloseSprite.loadGraphic(ImgPlanetClose1, true, true, 320, 100, true);
-                add(planetCloseSprite);
             }
             if(planets_visited == 2){
-                planetCloseSprite = new FlxSprite(0, 140);
                 planetCloseSprite.loadGraphic(ImgPlanetClose2, true, true, 320, 100, true);
-                add(planetCloseSprite);
 
             }
+            add(planetCloseSprite);
+            planetCloseSprite.alpha = 0;
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
@@ -78,6 +80,9 @@ package
             targets = new Array();
             for (var i:int = 0; i < 3; i++) {
                 addNewTarget();
+            }
+            for(i = 0; i < targets.length; i++){
+                targets[i].alpha = 0;
             }
 
             setupWorld();
@@ -96,13 +101,26 @@ package
 
         override public function update():void{
             super.update();
+            if(fadein){
+                launcher.fadeIn();
+                planetCloseSprite.alpha += .01;
+                for(i = 0; i < targets.length; i++){
+                    targets[i].alpha += .01;
+                }
+                truckSprite.alpha += .01;
+            }
+
+            if(new Date().valueOf() - startTime.valueOf() > 5000){
+                fadein = false;
+            }
+
             if(new Date().valueOf() - startTime.valueOf() > 15000){
-                //30,150
                 planetCloseSprite.alpha -= .01;
                 launcher.fadeOut();
                 for (i = 0; i < targets.length; i++) {
                     targets[i].alpha -= .01;
                 }
+                truckSprite.play("idle");
             }
             if(new Date().valueOf() - startTime.valueOf() > 17000){
                 truckSprite.play("boost");

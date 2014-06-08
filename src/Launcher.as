@@ -58,6 +58,9 @@ package {
 
             debugText = new FlxText(100,100,100,"");
             FlxG.state.add(debugText);
+
+            baseSprite.alpha = 0;
+            armSprite.alpha = 0;
         }
 
         override public function update():void {
@@ -151,6 +154,11 @@ package {
         public function fadeOut():void{
             baseSprite.alpha -= .01;
             armSprite.alpha -= .01;
+        }
+
+        public function fadeIn():void{
+            baseSprite.alpha += .01;
+            baseSprite.alpha += .01;
         }
 
         public function launchProjectile(angle:Number):void {
