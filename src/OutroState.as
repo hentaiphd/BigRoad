@@ -5,6 +5,7 @@ package{
         [Embed(source="../assets/end1.png")] private var ImgBg:Class;
 
         public var bg:FlxSprite;
+        public var startTime:Date;
 
         public function OutroState():void{
             //make variable ending
@@ -12,6 +13,7 @@ package{
 
         override public function create():void{
             FlxG.mouse.hide();
+            startTime = new Date();
 
             bg = new FlxSprite(0,0);
             bg.loadGraphic(ImgBg,false,false,320,240);
@@ -21,7 +23,7 @@ package{
         override public function update():void{
             super.update();
 
-            if(FlxG.mouse.pressed()){
+            if(new Date().valueOf() - startTime.valueOf() > 5000){
                 FlxG.switchState(new OutroGirlsState());
             }
         }

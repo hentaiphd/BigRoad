@@ -63,8 +63,8 @@ package{
             planet.x -= .5;
             planet.y += 2;
 
-            if(planets_visited >= 5){
-                FlxG.switchState(new MenuState());
+            if(planets_visited >= 3){
+                FlxG.switchState(new OutroState());
             }
 
             if(new Date().valueOf() - startTime.valueOf() > 4000){
