@@ -174,6 +174,9 @@ package{
             if(timeSec == 17 || FlxG.keys.SPACE){
                 FlxG.switchState(new PlayState());
             }
+            if(FlxG.mouse.pressed()){
+                FlxG.switchState(new PlayState());
+            }
 
             for(i = 0; i < trees_left.length; i++){
                 update_trees(i,trees_left, false);

@@ -68,7 +68,7 @@ package
                 click_counter++;
             }
 
-            debugText.text = "Plushies delivered: " + plushies_delivered.toString();
+            debugText.text = "Plushies delivered: " + plushies_delivered.toString() + "\nPlanets visited: " + planets_visited.toString();
 
             launcher.update();
 
