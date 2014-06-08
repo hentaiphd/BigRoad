@@ -323,10 +323,6 @@ package{
                 updateSparks();
             }
 
-            if(FlxG.mouse.pressed()){
-                FlxG.switchState(new CloseUpIntroState());
-            }
-
             //debug_text.text = "scene: " + current_scene.toString() + " state: " + current_state.toString() + " this length: " + current_scene_length.toString();
         }
 
