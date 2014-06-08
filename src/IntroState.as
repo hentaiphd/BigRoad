@@ -21,6 +21,7 @@ package{
         public var i:Number = 0;
 
         public var truck:WigglySprite;
+        public var headlights:WigglySprite;
         public var truck_group:FlxGroup;
         public var truck_pos:FlxPoint;
         public var jiggle:Boolean = false;
@@ -114,6 +115,9 @@ package{
                 truck.play("segment");
                 this.add(truck);
                 truck_group.add(truck);
+                if (i == 2) {
+                    headlights = truck;
+                }
             }
 
             boost_flash = new WigglySprite(left_wing.x,left_wing.y);
@@ -331,6 +335,7 @@ package{
                     } else if (current_scene == 5) {
                         road.alpha -= .01;
                         fadeTrees();
+                        headlights.alpha -= .01;
                         earth_sprite.scale.x -= .005;
                         earth_sprite.scale.y -= .005;
                         floatSpaceBG();
