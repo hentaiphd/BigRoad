@@ -64,7 +64,7 @@ package{
                 }
             }
 
-            if(new Date().valueOf() - startTime.valueOf() > 10000){
+            if(new Date().valueOf() - startTime.valueOf() > 10000 || FlxG.mouse.pressed() || FlxG.keys.SPACE){
                 FlxG.switchState(new PlayState());
             }
 

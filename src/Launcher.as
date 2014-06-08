@@ -7,9 +7,12 @@ package {
     import Box2D.Common.Math.*;
     import Box2D.Dynamics.Joints.*;
 
-    import mx.utils.ObjectUtil;
+    import flash.utils.setTimeout;
 
     public class Launcher extends FlxSprite{
+        [Embed(source="../assets/dad.png")] private var ImgDad:Class;
+        [Embed(source="../assets/dad_arm.png")] private var ImgDadArm:Class;
+
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
         public var m_world:b2World;
@@ -19,11 +22,14 @@ package {
         public var projectiles:Array;
         public var curProjectile:Projectile;
 
-        public var throwAngle:Number = 90;
+        public var throwAngle:Number;
         public var rotateBack:Boolean = false;
+        public var launchLock:Boolean = false;
         public var armForward:Boolean = false;
         public var armDrawAngle:Number;
         public var thisThrowAngle:Number;
+        public var throwStartAngle:Number;
+        public var throwAngleArc:Number;
 
         public var debugText:FlxText;
 
@@ -35,15 +41,22 @@ package {
             x = 20;
             y = 50;
 
+            throwStartAngle = throwAngle = 135;
+            throwAngleArc = 90;
+
             baseSprite = new FlxSprite(x, y);
-            baseSprite.makeGraphic(20, 40, 0xffff0000);
+            baseSprite.loadGraphic(ImgDad, true, true, 48, 48, true);
+            baseSprite.addAnimation("rest", [1], 1, false);
+            baseSprite.addAnimation("throw", [0], 1, false);
+            baseSprite.play("rest")
             FlxG.state.add(baseSprite);
 
             armSprite = new FlxSprite(x, y);
-            armSprite.makeGraphic(5, 15, 0xff00ff00);
+            armSprite.loadGraphic(ImgDadArm, true, true, 8, 64, true);
+            armSprite.visible = false;
             FlxG.state.add(armSprite);
 
-            debugText = new FlxText(10,10,100,"");
+            debugText = new FlxText(100,100,100,"");
             FlxG.state.add(debugText);
         }
 
@@ -58,33 +71,38 @@ package {
             if (armForward) {
                 if (armDrawAngle < thisThrowAngle) {
                     if (timeFrame % 2 == 0) {
-                        armDrawAngle += 20;
+                        armDrawAngle += 30;
                     }
                 } else {
-                    launchProjectile(armDrawAngle);
-                    armForward = false;
-                    armDrawAngle = throwAngle;
+                    if (!launchLock) {
+                        launchProjectile(armDrawAngle);
+                        launchLock = true;
+                    }
+                    setTimeout(resetArm, 500);
                 }
             } else {
                 if(FlxG.mouse.pressed()) {
+                    baseSprite.play("throw");
+                    armSprite.visible = true;
                     if(timeFrame % 5 == 0) {
-                        throwAngle += (rotateBack ? -1 : 1) * 18;
+                        throwAngle += (rotateBack ? -1 : 1) * 25;
                     }
-                    if (throwAngle >= 180+90) {
+                    if (throwAngle >= throwStartAngle + throwAngleArc) {
                         rotateBack = true;
-                    } else if(throwAngle <= 90) {
+                    } else if(throwAngle <= throwStartAngle) {
                         rotateBack = false;
                     }
+                    debugText.text = throwAngle + "";
                     armDrawAngle = throwAngle;
                 } else {
-                    armDrawAngle = 90;
+                    armDrawAngle = throwStartAngle;
                 }
             }
 
-            armSprite.x = baseSprite.x + 10*Math.sin(armDrawAngle * (Math.PI/180));
-            armSprite.y = baseSprite.y + 10*Math.cos(armDrawAngle * (Math.PI/180));
+            armSprite.x = baseSprite.x + 19;
+            armSprite.y = baseSprite.y - 20;
             armSprite.angle = 180 - armDrawAngle;
-            curProjectile.update(new FlxPoint(x, y), armDrawAngle);
+            curProjectile.update(new FlxPoint(x+19, y), armDrawAngle);
 
             for (var i:int = 0; i < projectiles.length; i++) {
                 var projectile:Projectile = projectiles[i];
@@ -102,8 +120,16 @@ package {
             }
 
             if (FlxG.mouse.justPressed()) {
-                throwAngle = 90;
+                throwAngle = throwStartAngle;
             }
+        }
+
+        public function resetArm():void {
+            armForward = false;
+            launchLock = false;
+            armDrawAngle = throwAngle;
+            baseSprite.play("rest");
+            armSprite.visible = false;
         }
 
         public function setPosition(pos:DHPoint):void {
