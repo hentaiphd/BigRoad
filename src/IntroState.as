@@ -221,7 +221,7 @@ package{
                         incrementScene();
                     } else if (current_scene == 3) {
                         apt_bg.alpha = 0;
-                        changeState(STATE_TRUCK2, 8*_fps);
+                        changeState(STATE_TRUCK1, 8*_fps);
                     }
                 } else {
                     if (current_scene == 0) {
