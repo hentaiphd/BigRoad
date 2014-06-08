@@ -3,11 +3,13 @@ package{
 
     public class IntroState extends FlxState{
         [Embed(source="../assets/road.png")] private var ImgRoad:Class;
+        [Embed(source="../assets/space1.png")] private var ImgSpaceBG:Class;
         [Embed(source="../assets/trees1.png")] private var ImgTree:Class;
         [Embed(source="../assets/truck_top.png")] private var ImgTruck:Class;
         [Embed(source="../assets/wings.png")] private var ImgWings:Class;
         [Embed(source="../assets/boostflash.png")] private var ImgBoost:Class;
         [Embed(source="../assets/sparks.png")] private var ImgSparks:Class;
+        [Embed(source="../assets/earth.png")] private var ImgEarth:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
         [Embed(source="../assets/frontsteps.png")] private var ImgAptBg:Class;
 
@@ -37,8 +39,11 @@ package{
         public var spark_r_speed:Number;
         public var spark_r_speed_group:Array = new Array();
 
+        public var earth_sprite:FlxSprite;
+
         public var black_bg:FlxSprite;
         public var apt_bg:FlxSprite;
+        public var space_bg:FlxSprite;
 
         public var time_frame:Number = 0;
         public var time_sec:Number = 0;
@@ -58,6 +63,16 @@ package{
 
         override public function create():void{
             FlxG.mouse.hide();
+
+            space_bg = new FlxSprite(0, 0);
+            space_bg.loadGraphic(ImgSpaceBG, true, true, 320, 240, true);
+            add(space_bg);
+
+            earth_sprite = new FlxSprite(-100, -100);
+            earth_sprite.loadGraphic(ImgEarth, true, true, 480, 480, true);
+            earth_sprite.scale.x = 2;
+            earth_sprite.scale.y = 2;
+            add(earth_sprite);
 
             road = new FlxSprite(0,0);
             road.loadGraphic(ImgRoad,true,false,320,240);
@@ -206,7 +221,7 @@ package{
                         incrementScene();
                     } else if (current_scene == 3) {
                         apt_bg.alpha = 0;
-                        changeState(STATE_TRUCK1, 8*_fps);
+                        changeState(STATE_TRUCK2, 8*_fps);
                     }
                 } else {
                     if (current_scene == 0) {
@@ -223,7 +238,7 @@ package{
                         incrementScene();
                     } else if (current_scene == 1) {
                         apt_bg.alpha = 1;
-                        changeState(STATE_GIRLS2, 3*_fps);
+                        changeState(STATE_GIRLS2, 5*_fps);
                     }
                 } else {
                     if (current_scene == 0) {
@@ -279,6 +294,10 @@ package{
                         boost_speed(true);
                         incrementScene();
                     } else if (current_scene == 4) {
+                        incrementScene(6*_fps);
+                    } else if (current_scene == 5) {
+                        incrementScene(6*_fps);
+                    } else if (current_scene == 6) {
                         FlxG.switchState(new CloseUpIntroState());
                     }
                 } else {
@@ -288,6 +307,16 @@ package{
                         left_wing.alpha += .01;
                         right_wing.alpha += .01;
                     } else if (current_scene == 2) {
+                    } else if (current_scene == 3) {
+                    } else if (current_scene == 4) {
+                    } else if (current_scene == 5) {
+                        road.alpha -= .01;
+                        fadeTrees();
+                        earth_sprite.scale.x -= .005;
+                        earth_sprite.scale.y -= .005;
+                    } else if (current_scene == 6) {
+                        earth_sprite.scale.x -= .001;
+                        earth_sprite.scale.y -= .001;
                     }
                 }
                 playRoadLoop();
@@ -311,6 +340,15 @@ package{
                 if(sparks_r_group.members[i].y > FlxG.height){
                     sparks_r_group.members[i].y = right_wing.y + (Math.random()*30)+30;
                 }
+            }
+        }
+
+        public function fadeTrees():void {
+            for(i = 0; i < trees_left.length; i++){
+                trees_left.members[i].alpha -= .01;
+            }
+            for(i = 0; i < trees_right.length; i++){
+                trees_right.members[i].alpha -= .01;
             }
         }
 
