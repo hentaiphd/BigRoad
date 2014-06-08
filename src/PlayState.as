@@ -40,6 +40,7 @@ package
         public var plushies_delivered:Number = 0;
 
         public var fadein:Boolean = true;
+        public var animLock:Boolean = false;
         public var _active:Boolean = true;
 
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
@@ -126,7 +127,10 @@ package
                 truckSprite.play("idle");
             }
             if(new Date().valueOf() - startTime.valueOf() > 17000){
-                truckSprite.play("boost");
+                if (!animLock) {
+                    animLock = true;
+                    truckSprite.play("boost");
+                }
                 if(truckSprite.x > 30){
                     truckSprite.x -= .5;
                 }

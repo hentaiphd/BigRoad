@@ -95,7 +95,7 @@ package {
                         launchProjectile(armDrawAngle);
                         launchLock = true;
                     }
-                    setTimeout(resetArm, 500);
+                    setTimeout(resetArm, 100);
                 }
             } else {
                 if(FlxG.mouse.pressed()) {
@@ -110,8 +110,10 @@ package {
                         rotateBack = false;
                     }
                     armDrawAngle = throwAngle;
-                } else {
-                    armDrawAngle = throwStartAngle;
+                } else if (FlxG.mouse.justReleased()) {
+                    armForward = true;
+                    thisThrowAngle = throwAngle + 180;
+                    armDrawAngle = throwAngle;
                 }
             }
 
@@ -119,16 +121,6 @@ package {
             armSprite.y = baseSprite.y - 20;
             armSprite.angle = 180 - armDrawAngle;
             curProjectile.update(new FlxPoint(x+19, y), armDrawAngle);
-
-            if (FlxG.mouse.justReleased()) {
-                armForward = true;
-                thisThrowAngle = throwAngle + 180;
-                armDrawAngle = throwAngle;
-            }
-
-            if (FlxG.mouse.justPressed()) {
-                throwAngle = throwStartAngle;
-            }
         }
 
         public function resetArm():void {
