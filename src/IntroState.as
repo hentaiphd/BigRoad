@@ -9,6 +9,7 @@ package{
         [Embed(source="../assets/boostflash.png")] private var ImgBoost:Class;
         [Embed(source="../assets/sparks.png")] private var ImgSparks:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
+        [Embed(source="../assets/frontsteps.png")] private var ImgAptBg:Class;
 
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
@@ -36,8 +37,17 @@ package{
         public var spark_r_speed:Number;
         public var spark_r_speed_group:Array = new Array();
 
-        public var timeSec:Number = 0;
-        public var timeFrame:Number = 0;
+        public var black_bg:FlxSprite;
+        public var apt_bg:FlxSprite;
+
+        public var time_frame:Number = 0;
+        public var time_sec:Number = 0;
+
+        public var current_state:Number = 1;
+
+        public var debug_text:FlxText;
+
+        public var timer:Number = 3;
 
         override public function create():void{
             FlxG.mouse.hide();
@@ -56,6 +66,7 @@ package{
             left_wing.addAnimation("leftwing_flare",[1,2,3],12,true);
             left_wing.play("leftwing");
             this.add(left_wing);
+            left_wing.alpha = 0;
 
             right_wing = new WigglySprite(truck_pos.x+37,truck_pos.y+126);
             right_wing.loadGraphic(ImgWings,true,false,32,80);
@@ -63,6 +74,7 @@ package{
             right_wing.addAnimation("rightwing_flare",[5,6,7],12,true);
             right_wing.play("rightwing");
             this.add(right_wing);
+            right_wing.alpha = 0;
 
             truck_group = new FlxGroup();
             this.add(truck_group);
@@ -95,6 +107,7 @@ package{
                 sparks_l.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
                 sparks_l.play("spark");
                 sparks_l_group.add(sparks_l);
+                sparks_l.alpha = 0;
 
                 spark_l_speed = (Math.random()*5)+2;
                 spark_l_speed_group.push(spark_l_speed);
@@ -106,6 +119,7 @@ package{
                 sparks_r.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
                 sparks_r.play("spark");
                 sparks_r_group.add(sparks_r);
+                sparks_r.alpha = 0;
 
                 spark_r_speed = (Math.random()*5)+2;
                 spark_r_speed_group.push(spark_r_speed);
@@ -157,16 +171,94 @@ package{
                     FlxG.playMusic(SndBGM);
                 }
             }
+
+            apt_bg = new FlxSprite(0,0);
+            apt_bg.loadGraphic(ImgAptBg,true,false,320,480);
+            apt_bg.addAnimation("no_bubble",[0],12,false);
+            apt_bg.addAnimation("friend_bubble",[1],12,false);
+            apt_bg.addAnimation("girl_bubble",[2],12,false);
+            this.add(apt_bg);
+            apt_bg.play("no_bubble");
+
+            black_bg = new FlxSprite(0,0);
+            black_bg.makeGraphic(320,480,0xff000000);
+            this.add(black_bg);
+            black_bg.alpha = 0;
+
+            debug_text = new FlxText(10,10,500,"");
+            this.add(debug_text);
         }
 
         override public function update():void{
             super.update();
-            timeFrame++;
-            if(timeFrame%50 == 0){
-                timeSec++;
+            time_frame++;
+            if(time_frame%50 == 0){
+                time_sec++;
+            }
+            debug_text.text = "State: " + current_state.toString() + " Timer: " + timer.toString() + " TimeSec: " + time_sec.toString();
+
+            if(time_sec == timer){
+                if(current_state == 1){
+                    timer += 10;
+                    current_state++;
+                    apt_bg.play("friend_bubble");
+                }
+            }
+            if(time_sec == timer){
+                if(current_state == 2){
+                    timer += 10;
+                    current_state++;
+                    apt_bg.play("girl_bubble");
+                }
+            }
+            if(time_sec == timer){
+                if(current_state == 3){
+                    timer += 2;
+                    current_state++;
+                }
+            }
+            if(time_sec == timer){
+                if(current_state == 4){
+                    timer += 10;
+                    current_state++;
+                    apt_bg.alpha = 0;
+                }
+            }
+            if(time_sec == timer){
+                if(current_state == 5){
+                    timer += 2;
+                    current_state++;
+                }
+            }
+            if(time_sec == timer){
+                if(current_state == 6){
+                    timer += 10;
+                    apt_bg.alpha = 1;
+                }
+            }
+            if(time_sec == timer){
+                if(current_state == 7){
+                    //apt_bg.alpha = 1;
+                }
             }
 
-            if(timeFrame == 7*50){
+            if(current_state == 1){
+                //do nothing
+            } else if(current_state == 2){
+                //do nothing
+            } else if(current_state == 3){
+                black_bg.alpha += .01;
+            } else if(current_state == 4){
+                black_bg.alpha -= .01;
+            } else if(current_state == 5){
+                black_bg.alpha += .01;
+            } else if(current_state == 6){
+                black_bg.alpha -= .01;
+            } else if(current_state == 7){
+                //black_bg.alpha -= .01;
+            }
+
+            /*if(timeFrame == 7*50){
                 this.add(boost_flash);
                 boost_speed(false);
             }
@@ -202,7 +294,7 @@ package{
                 if(sparks_r_group.members[i].y > FlxG.height){
                     sparks_r_group.members[i].y = right_wing.y + (Math.random()*30)+30;
                 }
-            }
+            }*/
         }
 
         public function update_trees(i:Number,trees:FlxGroup, _right:Boolean):void{
