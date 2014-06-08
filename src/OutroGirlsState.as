@@ -1,12 +1,12 @@
 package{
     import org.flixel.*;
 
-    public class OutroState extends FlxState{
+    public class OutroGirlsState extends FlxState{
         [Embed(source="../assets/end1.png")] private var ImgBg:Class;
 
         public var bg:FlxSprite;
 
-        public function OutroState():void{
+        public function OutroGirlsState():void{
             //make variable ending
         }
 
