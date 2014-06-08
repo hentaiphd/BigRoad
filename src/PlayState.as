@@ -102,6 +102,8 @@ package
                 help_text = new FlxSprite(20,100);
                 help_text.loadGraphic(ImgHelp,false,false,228,48);
                 add(help_text);
+            } else {
+                startTime = new Date().valueOf();
             }
 
             starting_mouse_x = FlxG.mouse.x;
