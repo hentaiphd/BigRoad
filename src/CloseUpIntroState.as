@@ -7,6 +7,7 @@ package{
         [Embed(source="../assets/holopres.png")] private var ImgDashPres:Class;
         [Embed(source="../assets/holopresface.png")] private var ImgPres:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
+        [Embed(source="../assets/nulshock.ttf", fontFamily="nulshock", embedAsCFF="false")] public var FontHud:String;
 
         public var now:Date;
         public var startTime:Date;
@@ -16,6 +17,12 @@ package{
         public var dash_pres:FlxSprite;
         public var pres_icon:FlxSprite;
         public var pres_box:FlxSprite;
+
+        public var pres_text:FlxText;
+        public var current_text:Number = 0;
+        public var float:String = "up";
+
+        public var debug_text:FlxText;
 
         override public function create():void{
             FlxG.mouse.hide();
@@ -57,10 +64,34 @@ package{
                     FlxG.playMusic(SndBGM);
                 }
             }
+
+            pres_text = new FlxText(pres_box.x+70,pres_box.y+3,190,"");
+            //pres_text.setFormat("nulshock");
+            pres_text.size = 8;
+            pres_text.color = 0xffffffff;
+            this.add(pres_text);
+            pres_text.alpha = 0;
+
+            debug_text = new FlxText(10,10,500,"");
+            this.add(debug_text);
         }
 
         override public function update():void{
             super.update();
+            debug_text.text = current_text + "";
+
+            if(bg.y < -10){
+                float = "down";
+            } else if(bg.y > 10){
+                float = "up";
+            }
+
+            if(float == "up"){
+                bg.y -= .1;
+            }
+            if(float == "down"){
+                bg.y += .1;
+            }
 
             if(new Date().valueOf() - startTime.valueOf() > 2000){
                 truck.play("looking");
@@ -72,12 +103,29 @@ package{
                 if(pres_box.alpha < .75){
                     pres_box.alpha += .01;
                 }
+                if(current_text < 1){
+                    current_text++;
+                }
             }
 
-            if(new Date().valueOf() - startTime.valueOf() > 10000 || FlxG.mouse.pressed() || FlxG.keys.SPACE){
+            if(current_text >= 1){
+                if(FlxG.mouse.justPressed()){
+                    current_text++;
+                }
+            }
+
+            if(current_text == 1){
+                pres_text.alpha += .01;
+                pres_text.text = "Space Dad... I have a very important mission for you.";
+            } else if(current_text == 2){
+                pres_text.text = "I have received secret intelligence that the Bee Empire is planning an assault.";
+            } else if(current_text == 3){
+                pres_text.text = "The people of our star system need encouragement and support during these trying times.";
+            } else if(current_text == 4){
+                pres_text.text = "Space Dad... these plushies are a symbol of hope and love. Please take them into your space truck, and deliver them to our people.";
+            } else if(current_text == 5){
                 FlxG.switchState(new PlayState());
             }
-
         }
     }
 }

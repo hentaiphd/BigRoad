@@ -258,6 +258,10 @@ package{
                 //black_bg.alpha -= .01;
             }
 
+            if(FlxG.mouse.pressed()){
+                FlxG.switchState(new CloseUpIntroState());
+            }
+
             /*if(timeFrame == 7*50){
                 this.add(boost_flash);
                 boost_speed(false);
