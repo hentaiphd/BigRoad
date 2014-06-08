@@ -16,7 +16,7 @@ package
         [Embed(source="../assets/gametruck.png")] private var ImgTruck:Class;
         [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose:Class;
         [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
-        [Embed(source="../assets/FORCEDSQUARE.ttf", fontFamily="FORCEDSQUARE", embedAsCFF="false")] public var FontHud:String;
+        [Embed(source="../assets/instructions.png")] private var ImgHelp:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
 
         public var _bg:FlxSprite;
@@ -43,7 +43,7 @@ package
         public var _active:Boolean = true;
 
         public var smoke:FlxSprite;
-        public var help_text:FlxText;
+        public var help_text:FlxSprite;
         public var starting_mouse_x:Number;
 
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
@@ -98,7 +98,8 @@ package
             smoke.makeGraphic(320, 240, 0xaa000000);
             add(smoke);
 
-            help_text = new FlxText(20, 100, FlxG.width, "Use the mouse to move Space Dad.\nClick, hold, and release to toss plushies");
+            help_text = new FlxSprite(20,100);
+            help_text.loadGraphic(ImgHelp,false,false,228,48);
             add(help_text);
 
             starting_mouse_x = FlxG.mouse.x;
