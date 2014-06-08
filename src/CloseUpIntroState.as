@@ -65,7 +65,7 @@ package{
             }
 
             if(new Date().valueOf() - startTime.valueOf() > 10000){
-                FlxG.switchState(new IntroState());
+                FlxG.switchState(new PlayState());
             }
 
         }

@@ -171,11 +171,8 @@ package{
             if(timeFrame == 13*50){
                 boost_speed(true);
             }
-            if(timeSec == 17 || FlxG.keys.SPACE){
-                FlxG.switchState(new PlayState());
-            }
-            if(FlxG.mouse.pressed()){
-                FlxG.switchState(new PlayState());
+            if(timeSec == 17 || FlxG.keys.SPACE || FlxG.mouse.pressed()){
+                FlxG.switchState(new CloseUpIntroState());
             }
 
             for(i = 0; i < trees_left.length; i++){
