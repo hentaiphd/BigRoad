@@ -30,6 +30,7 @@ package
         public var launcher:Launcher = null;
         public var truckSprite:FlxSprite;
         public var planetCloseSprite:FlxSprite;
+        public var planet:FlxSprite;
 
         public var now:Date;
         public var startTime:Date;
@@ -62,7 +63,6 @@ package
             truckSprite.addAnimation("boost", [2, 3, 4], 12, true);
             add(truckSprite);
             truckSprite.play("open");
-            truckSprite.alpha = 0;
 
             planetCloseSprite = new FlxSprite(0, 80);
             planetCloseSprite.loadGraphic(ImgPlanetClose, true, true, 320, 160, true);
@@ -71,6 +71,12 @@ package
             planetCloseSprite.play(planets_visited + "");
             add(planetCloseSprite);
             planetCloseSprite.alpha = 0;
+
+            planet = new FlxSprite(210,65);
+            planet.loadGraphic(ImgPlanet,false,false,64,64);
+            add(planet);
+            planet.scale.x = .5;
+            planet.scale.y = .5;
 
             debugText = new FlxText(10,10,100,"");
             add(debugText);
@@ -105,7 +111,6 @@ package
                 for(i = 0; i < targets.length; i++){
                     targets[i].alpha += .01;
                 }
-                truckSprite.alpha += .01;
             }
 
             if(new Date().valueOf() - startTime.valueOf() > 5000){
@@ -123,18 +128,6 @@ package
                 truckSprite.play("idle");
             }
             if(new Date().valueOf() - startTime.valueOf() > 17000){
-                if (!animLock) {
-                    animLock = true;
-                    truckSprite.play("boost");
-                }
-                if(truckSprite.x > 30){
-                    truckSprite.x -= .5;
-                }
-                if(truckSprite.y < 150){
-                    truckSprite.y += .5;
-                }
-            }
-            if(truckSprite.x == 30 && truckSprite.y == 150){
                 FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
             }
 

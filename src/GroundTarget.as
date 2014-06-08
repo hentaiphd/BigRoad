@@ -42,6 +42,7 @@ package {
             play("alien"+rand_alien+"_waiting");
             if(_active == false){
                 play("alien"+rand_alien+"_happy");
+
                 this.y += .5;
                 if(this.y > FlxG.height){
                     FlxG.state.remove(this);

@@ -28,12 +28,19 @@ package{
             bg.loadGraphic(Bg,false,false,640,480);
             add(bg);
 
-            planet = new FlxSprite(200,65);
+            planet = new FlxSprite(210,65);
             planet.loadGraphic(Planet2,false,false,64,64);
             add(planet);
-            planet.alpha = 0;
+            planet.scale.x = .5;
+            planet.scale.y = .5;
 
-            truck = new FlxSprite(30,150);
+            planet = new FlxSprite(210,65);
+            planet.loadGraphic(Planet2,false,false,64,64);
+            add(planet);
+            planet.scale.x = .5;
+            planet.scale.y = .5;
+
+            truck = new FlxSprite(100,20);
             truck.loadGraphic(Truck,true,false,100,64);
             truck.addAnimation("idle", [0], 1, false);
             truck.addAnimation("open", [1], 1, false);
@@ -50,21 +57,21 @@ package{
         override public function update():void{
             super.update();
             bg.y -= .5;
-            planet.alpha += .01;
 
-            if(planet.alpha == 1){
-                planet.scale.x += .01;
-                planet.scale.y += .01;
-                if(planets_visited >= 5){
-                    FlxG.switchState(new MenuState());
-                }
+            planet.scale.x += .05;
+            planet.scale.y += .05;
+            planet.x -= .5;
+            planet.y += 2;
 
-                if(new Date().valueOf() - startTime.valueOf() > 7000){
-                    black_bg.alpha += .1;
-                }
-                if(black_bg.alpha == 1){
-                    FlxG.switchState(new PlayState(planets_visited,plushies_delivered));
-                }
+            if(planets_visited >= 5){
+                FlxG.switchState(new MenuState());
+            }
+
+            if(new Date().valueOf() - startTime.valueOf() > 4000){
+                black_bg.alpha += .1;
+            }
+            if(black_bg.alpha == 1){
+                FlxG.switchState(new PlayState(planets_visited,plushies_delivered));
             }
         }
     }
