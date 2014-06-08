@@ -238,8 +238,6 @@ package{
                 time_sec++;
             }
 
-            debug_text.text = can_click_through + "";
-
             if (current_state == STATE_GIRLS1) {
                 if (shouldIncrementScene()) {
                     if (current_scene == 0) {
