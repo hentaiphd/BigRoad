@@ -40,6 +40,7 @@ package
         public var plushies_delivered:Number = 0;
 
         public var fadein:Boolean = true;
+        public var _active:Boolean = true;
 
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
             planet_count++;
@@ -115,7 +116,9 @@ package
             }
 
             if(new Date().valueOf() - startTime.valueOf() > 15000){
+                _active = false;
                 planetCloseSprite.alpha -= .01;
+                launcher._active = false;
                 launcher.fadeOut();
                 for (i = 0; i < targets.length; i++) {
                     targets[i].alpha -= .01;
@@ -170,7 +173,7 @@ package
         }
 
         public function addNewTarget():void {
-            if(FlxG.state == this) {
+            if(FlxG.state == this && _active) {
                 var t:GroundTarget = new GroundTarget(
                     new DHPoint(Math.random()*((FlxG.width-50)/FlxG.camera.zoom),
                     177),planets_visited);

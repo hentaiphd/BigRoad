@@ -31,12 +31,15 @@ package {
         public var throwStartAngle:Number;
         public var throwAngleArc:Number;
 
+        public var _active:Boolean = true;
+
         public var debugText:FlxText;
 
         public function Launcher(world:b2World) {
             m_world = world;
             projectiles = new Array();
             curProjectile = new Projectile(m_world);
+            curProjectile.spr.alpha = 0;
 
             x = 20;
             y = 50;
@@ -68,6 +71,17 @@ package {
             if(timeFrame % 50 == 0){
                 timeSec++;
             }
+
+            for (var i:int = 0; i < projectiles.length; i++) {
+                var projectile:Projectile = projectiles[i];
+                projectile.update();
+
+                if (projectile.inactive) {
+                    projectiles.splice(projectiles.indexOf(projectile), 1);
+                }
+            }
+
+            if (!_active) return;
 
             setPosition(new DHPoint(FlxG.mouse.x, y));
 
@@ -105,15 +119,6 @@ package {
             armSprite.y = baseSprite.y - 20;
             armSprite.angle = 180 - armDrawAngle;
             curProjectile.update(new FlxPoint(x+19, y), armDrawAngle);
-
-            for (var i:int = 0; i < projectiles.length; i++) {
-                var projectile:Projectile = projectiles[i];
-                projectile.update();
-
-                if (projectile.inactive) {
-                    projectiles.splice(projectiles.indexOf(projectile), 1);
-                }
-            }
 
             if (FlxG.mouse.justReleased()) {
                 armForward = true;
@@ -153,11 +158,19 @@ package {
         public function fadeOut():void{
             baseSprite.alpha -= .01;
             armSprite.alpha -= .01;
+            curProjectile.spr.alpha -= .01;
+
+            for (var j:Number = 0; j < projectiles.length; j++) {
+                var proj:Projectile = projectiles[j];
+                proj.destroy();
+            }
+            projectiles.length = 0;
         }
 
         public function fadeIn():void{
             baseSprite.alpha += .01;
             armSprite.alpha += .01;
+            curProjectile.spr.alpha += .01;
         }
 
         public function launchProjectile(angle:Number):void {
