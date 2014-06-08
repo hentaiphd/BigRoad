@@ -12,6 +12,9 @@ package{
         [Embed(source="../assets/earth.png")] private var ImgEarth:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
         [Embed(source="../assets/frontsteps.png")] private var ImgAptBg:Class;
+        [Embed(source="../assets/intro_text_1.png")] private var ImgText1:Class;
+        [Embed(source="../assets/intro_text_2.png")] private var ImgText2:Class;
+        [Embed(source="../assets/intro_text_3.png")] private var ImgText3:Class;
 
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
@@ -47,8 +50,9 @@ package{
         public var apt_bg:FlxSprite;
         public var space_bg:FlxSprite;
 
-        public var friend_text:FlxText;
-        public var girl_text:FlxText;
+        public var friend_text:FlxSprite;
+        public var girl_text:FlxSprite;
+        public var girl_text_two:FlxSprite;
 
         public var time_frame:Number = 0;
         public var time_sec:Number = 0;
@@ -201,13 +205,20 @@ package{
             this.add(apt_bg);
             apt_bg.play("no_bubble");
 
-            friend_text = new FlxText(30, 35, 200, "My dad and I went on a fishing trip yesterday! It was so fun!\n...\nHave you ever gone fishing with your dad?");
+            friend_text = new FlxSprite(30,45);
+            friend_text.loadGraphic(ImgText1,false,false,209,41);
             friend_text.alpha = 0;
             add(friend_text);
 
-            girl_text = new FlxText(100, 60, 200, "No. My parents are divorced. My dad's a truck driver, so he doesn't visit much");
+            girl_text = new FlxSprite(95,67);
+            girl_text.loadGraphic(ImgText2,false,false,209,41);
             girl_text.alpha = 0;
             add(girl_text);
+
+            girl_text_two = new FlxSprite(95,82);
+            girl_text_two.loadGraphic(ImgText3,false,false,209,11);
+            girl_text_two.alpha = 0;
+            add(girl_text_two);
 
             black_bg = new FlxSprite(0,0);
             black_bg.makeGraphic(320,480,0xff000000);
@@ -241,7 +252,6 @@ package{
                     } else if (current_scene == 3) {
                         apt_bg.alpha = 0;
                         girl_text.alpha = 0;
-                        girl_text.text = "He's always working, somewhere far away...";
                         changeState(STATE_TRUCK1, 8*_fps);
                     }
                 } else {
@@ -283,7 +293,7 @@ package{
                 } else {
                     if (current_scene == 0) {
                         black_bg.alpha -= .01;
-                        girl_text.alpha += .01;
+                        girl_text_two.alpha += .01;
                     } else if (current_scene == 1) {
                         black_bg.alpha += .01;
                     } else if (current_scene == 2) {
