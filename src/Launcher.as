@@ -95,7 +95,6 @@ package {
                     } else if(throwAngle <= throwStartAngle) {
                         rotateBack = false;
                     }
-                    debugText.text = throwAngle + "";
                     armDrawAngle = throwAngle;
                 } else {
                     armDrawAngle = throwStartAngle;
@@ -158,7 +157,7 @@ package {
 
         public function fadeIn():void{
             baseSprite.alpha += .01;
-            baseSprite.alpha += .01;
+            armSprite.alpha += .01;
         }
 
         public function launchProjectile(angle:Number):void {
