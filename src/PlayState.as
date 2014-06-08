@@ -32,8 +32,7 @@ package
         public var planetCloseSprite:FlxSprite;
         public var planet:FlxSprite;
 
-        public var now:Date;
-        public var startTime:Date;
+        public var startTime:Number = -1;
 
         public var click_counter:Number = 0;
         public var planets_visited:Number = 0;
@@ -43,6 +42,10 @@ package
         public var animLock:Boolean = false;
         public var _active:Boolean = true;
 
+        public var smoke:FlxSprite;
+        public var help_text:FlxText;
+        public var starting_mouse_x:Number;
+
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
             planet_count++;
             planets_visited = planet_count;
@@ -50,8 +53,6 @@ package
         }
 
         override public function create():void{
-            startTime = new Date();
-
             _bg = new FlxSprite(0,0);
             _bg.loadGraphic(ImgBg,false,false,640,480);
             add(_bg);
@@ -93,6 +94,15 @@ package
 
             launcher = new Launcher(m_world);
 
+            smoke = new FlxSprite(0, 0);
+            smoke.makeGraphic(320, 240, 0xaa000000);
+            add(smoke);
+
+            help_text = new FlxText(20, 100, FlxG.width, "Use the mouse to move Space Dad.\nClick, hold, and release to toss plushies");
+            add(help_text);
+
+            starting_mouse_x = FlxG.mouse.x;
+
             if(FlxG.music == null){
                 FlxG.playMusic(SndBGM);
             } else {
@@ -105,6 +115,15 @@ package
 
         override public function update():void{
             super.update();
+
+            if (FlxG.mouse.x != starting_mouse_x) {
+                remove(smoke);
+                remove(help_text);
+                if (startTime == -1) {
+                    startTime = new Date().valueOf();
+                }
+            }
+
             if(fadein){
                 launcher.fadeIn();
                 planetCloseSprite.alpha += .01;
@@ -113,22 +132,22 @@ package
                 }
             }
 
-            if(new Date().valueOf() - startTime.valueOf() > 5000){
-                fadein = false;
-            }
-
-            if(new Date().valueOf() - startTime.valueOf() > 15000){
-                _active = false;
-                planetCloseSprite.alpha -= .01;
-                launcher._active = false;
-                launcher.fadeOut();
-                for (i = 0; i < targets.length; i++) {
-                    targets[i].alpha -= .01;
+            var cur_time:Number = new Date().valueOf();
+            if (startTime != -1) {
+                if(cur_time - startTime > 5000){
+                    fadein = false;
+                } else if(cur_time - startTime > 15000){
+                    _active = false;
+                    planetCloseSprite.alpha -= .01;
+                    launcher._active = false;
+                    launcher.fadeOut();
+                    for (i = 0; i < targets.length; i++) {
+                        targets[i].alpha -= .01;
+                    }
+                    truckSprite.play("idle");
+                } else if(cur_time - startTime > 17000){
+                    FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
                 }
-                truckSprite.play("idle");
-            }
-            if(new Date().valueOf() - startTime.valueOf() > 17000){
-                FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
             }
 
             if(FlxG.mouse.justPressed()){
