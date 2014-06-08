@@ -42,8 +42,15 @@ package{
 
         public var time_frame:Number = 0;
         public var time_sec:Number = 0;
-
-        public var current_state:Number = 1;
+        public static const _fps:Number = 50;
+        public var current_scene_length:Number = 3*_fps;
+        public var current_scene:Number = 0;
+        public var lastSceneChangeTimeFrame:Number = 0;
+        public static const STATE_GIRLS1:Number = 0;
+        public static const STATE_TRUCK1:Number = 1;
+        public static const STATE_GIRLS2:Number = 2;
+        public static const STATE_TRUCK2:Number = 3;
+        public var current_state:Number = STATE_GIRLS1;
 
         public var debug_text:FlxText;
 
@@ -192,103 +199,110 @@ package{
         override public function update():void{
             super.update();
             time_frame++;
-            if(time_frame%50 == 0){
+            if(time_frame%_fps == 0){
                 time_sec++;
             }
-            debug_text.text = "State: " + current_state.toString() + " Timer: " + timer.toString() + " TimeSec: " + time_sec.toString();
 
-            if(time_sec == timer){
-                if(current_state == 1){
-                    timer += 10;
-                    current_state++;
-                    apt_bg.play("friend_bubble");
+            if (current_state == STATE_GIRLS1) {
+                if (shouldIncrementScene()) {
+                    if (current_scene == 0) {
+                        apt_bg.play("friend_bubble");
+                        incrementScene();
+                    } else if (current_scene == 1) {
+                        apt_bg.play("girl_bubble");
+                        incrementScene();
+                    } else if (current_scene == 2) {
+                        incrementScene();
+                    } else if (current_scene == 3) {
+                        apt_bg.alpha = 0;
+                        changeState(STATE_TRUCK1, 8*_fps);
+                    }
+                } else {
+                    if (current_scene == 0) {
+                    } else if (current_scene == 1) {
+                    } else if (current_scene == 2) {
+                    } else if (current_scene == 3) {
+                        black_bg.alpha += .01;
+                    } else if (current_scene == 4) {
+                    }
                 }
-            }
-            if(time_sec == timer){
-                if(current_state == 2){
-                    timer += 10;
-                    current_state++;
-                    apt_bg.play("girl_bubble");
+            } else if (current_state == STATE_TRUCK1) {
+                if (shouldIncrementScene()) {
+                    if (current_scene == 0) {
+                        incrementScene();
+                    } else if (current_scene == 1) {
+                        apt_bg.alpha = 1;
+                        changeState(STATE_GIRLS2, 3*_fps);
+                    }
+                } else {
+                    if (current_scene == 0) {
+                        black_bg.alpha -= .01;
+                    } else if (current_scene == 1) {
+                        black_bg.alpha += .01;
+                    }
                 }
-            }
-            if(time_sec == timer){
-                if(current_state == 3){
-                    timer += 2;
-                    current_state++;
+                playRoadLoop();
+            } else if (current_state == STATE_GIRLS2) {
+                if (shouldIncrementScene()) {
+                    if (current_scene == 0) {
+                        incrementScene();
+                    } else if (current_scene == 1) {
+                        incrementScene();
+                    } else if (current_scene == 2) {
+                        apt_bg.alpha = 0;
+                        changeState(STATE_TRUCK2, 5*_fps);
+                    }
+                } else {
+                    if (current_scene == 0) {
+                        black_bg.alpha -= .01;
+                    } else if (current_scene == 1) {
+                        black_bg.alpha += .01;
+                    } else if (current_scene == 2) {
+                    }
                 }
-            }
-            if(time_sec == timer){
-                if(current_state == 4){
-                    timer += 10;
-                    current_state++;
-                    apt_bg.alpha = 0;
+            } else if (current_state == STATE_TRUCK2) {
+                if (shouldIncrementScene()) {
+                    if (current_scene == 0) {
+                        incrementScene();
+                    } else if (current_scene == 1) {
+                        this.add(boost_flash);
+                        boost_speed(false);
+                        incrementScene(20);
+                    } else if (current_scene == 2) {
+                        boost_flash.kill();
+                        left_wing.play("leftwing_flare");
+                        right_wing.play("rightwing_flare");
+                        sparks_l.alpha = 1;
+                        sparks_r.alpha = 1;
+                        boost_speed(true);
+                        incrementScene();
+                    } else if (current_scene == 3) {
+                        boost_speed(true);
+                        incrementScene();
+                    } else if (current_scene == 4) {
+                        FlxG.switchState(new CloseUpIntroState());
+                    }
+                } else {
+                    if (current_scene == 0) {
+                        black_bg.alpha -= .01;
+                    } else if (current_scene == 1) {
+                        left_wing.alpha += .01;
+                        right_wing.alpha += .01;
+                    } else if (current_scene == 2) {
+                    }
                 }
-            }
-            if(time_sec == timer){
-                if(current_state == 5){
-                    timer += 2;
-                    current_state++;
-                }
-            }
-            if(time_sec == timer){
-                if(current_state == 6){
-                    timer += 10;
-                    apt_bg.alpha = 1;
-                }
-            }
-            if(time_sec == timer){
-                if(current_state == 7){
-                    //apt_bg.alpha = 1;
-                }
-            }
-
-            if(current_state == 1){
-                //do nothing
-            } else if(current_state == 2){
-                //do nothing
-            } else if(current_state == 3){
-                black_bg.alpha += .01;
-            } else if(current_state == 4){
-                black_bg.alpha -= .01;
-            } else if(current_state == 5){
-                black_bg.alpha += .01;
-            } else if(current_state == 6){
-                black_bg.alpha -= .01;
-            } else if(current_state == 7){
-                //black_bg.alpha -= .01;
+                playRoadLoop();
+                updateSparks();
             }
 
             if(FlxG.mouse.pressed()){
                 FlxG.switchState(new CloseUpIntroState());
             }
 
-            /*if(timeFrame == 7*50){
-                this.add(boost_flash);
-                boost_speed(false);
-            }
-            if(timeFrame == 9*50){
-                boost_flash.kill();
-                left_wing.play("leftwing_flare");
-                right_wing.play("rightwing_flare");
-                this.add(sparks_r);
-                this.add(sparks_l);
-                boost_speed(true);
-            }
-            if(timeFrame == 13*50){
-                boost_speed(true);
-            }
-            if(timeSec == 17 || FlxG.keys.SPACE || FlxG.mouse.pressed()){
-                FlxG.switchState(new CloseUpIntroState());
-            }
+            //debug_text.text = "scene: " + current_scene.toString() + " state: " + current_state.toString() + " this length: " + current_scene_length.toString();
+        }
 
-            for(i = 0; i < trees_left.length; i++){
-                update_trees(i,trees_left, false);
-            }
-
-            for(i = 0; i < trees_right.length; i++){
-                update_trees(i,trees_right, true);
-            }
-
+        public function updateSparks():void {
             for(i = 0; i < sparks_l_group.length; i++){
                 sparks_l_group.members[i].y += spark_l_speed_group[i];
                 sparks_r_group.members[i].y += spark_r_speed_group[i];
@@ -298,7 +312,33 @@ package{
                 if(sparks_r_group.members[i].y > FlxG.height){
                     sparks_r_group.members[i].y = right_wing.y + (Math.random()*30)+30;
                 }
-            }*/
+            }
+        }
+
+        public function playRoadLoop():void {
+            for(i = 0; i < trees_left.length; i++){
+                update_trees(i,trees_left, false);
+            }
+            for(i = 0; i < trees_right.length; i++){
+                update_trees(i,trees_right, true);
+            }
+        }
+
+        public function incrementScene(next_length:Number=3*_fps):void {
+            current_scene += 1;
+            lastSceneChangeTimeFrame = time_frame;
+            current_scene_length = next_length;
+        }
+
+        public function changeState(_state:Number, next_length:Number=3*_fps):void {
+            current_scene = 0;
+            lastSceneChangeTimeFrame = time_frame;
+            current_state = _state;
+            current_scene_length = next_length;
+        }
+
+        public function shouldIncrementScene():Boolean {
+            return time_frame - lastSceneChangeTimeFrame == current_scene_length;
         }
 
         public function update_trees(i:Number,trees:FlxGroup, _right:Boolean):void{
