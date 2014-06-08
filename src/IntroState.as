@@ -19,7 +19,7 @@ package{
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
         public var trees_right:FlxGroup;
-        public var tree_speed:Number = 3;
+        public var tree_speed:Number = 10;
         public var tree:FlxSprite;
         public var i:Number = 0;
 
@@ -69,6 +69,8 @@ package{
         public var debug_text:FlxText;
 
         public var timer:Number = 3;
+
+        public var can_click_through:Boolean = false;
 
         override public function create():void{
             FlxG.mouse.hide();
@@ -236,17 +238,19 @@ package{
                 time_sec++;
             }
 
+            debug_text.text = can_click_through + "";
+
             if (current_state == STATE_GIRLS1) {
                 if (shouldIncrementScene()) {
                     if (current_scene == 0) {
                         apt_bg.play("friend_bubble");
                         friend_text.alpha = 1;
-                        incrementScene(5*_fps);
+                        incrementScene(5*_fps,true);
                     } else if (current_scene == 1) {
                         apt_bg.play("girl_bubble");
                         friend_text.alpha = 0;
                         girl_text.alpha = 1;
-                        incrementScene(5*_fps);
+                        incrementScene(5*_fps,true);
                     } else if (current_scene == 2) {
                         incrementScene();
                     } else if (current_scene == 3) {
@@ -349,8 +353,10 @@ package{
                         headlights.alpha -= .01;
                         earth_sprite.scale.x -= .005;
                         earth_sprite.scale.y -= .005;
+                        earth_sprite.y += .5;
                         floatSpaceBG();
                     } else if (current_scene == 6) {
+                        earth_sprite.y += .1;
                         earth_sprite.scale.x -= .001;
                         earth_sprite.scale.y -= .001;
                     }
@@ -377,10 +383,10 @@ package{
 
         public function fadeTrees():void {
             for(i = 0; i < trees_left.length; i++){
-                trees_left.members[i].alpha -= .01;
+                trees_left.members[i].alpha -= .5;
             }
             for(i = 0; i < trees_right.length; i++){
-                trees_right.members[i].alpha -= .01;
+                trees_right.members[i].alpha -= .5;
             }
         }
 
@@ -393,7 +399,8 @@ package{
             }
         }
 
-        public function incrementScene(next_length:Number=3*_fps):void {
+        public function incrementScene(next_length:Number=3*_fps, click_through:Boolean=false):void {
+            can_click_through = click_through;
             current_scene += 1;
             lastSceneChangeTimeFrame = time_frame;
             current_scene_length = next_length;
@@ -407,7 +414,12 @@ package{
         }
 
         public function shouldIncrementScene():Boolean {
-            return time_frame - lastSceneChangeTimeFrame == current_scene_length;
+            var timer:Boolean = time_frame - lastSceneChangeTimeFrame == current_scene_length;
+            if(can_click_through){
+                return timer || FlxG.mouse.justPressed();
+            } else {
+                return timer;
+            }
         }
 
         public function update_trees(i:Number,trees:FlxGroup, _right:Boolean):void{
