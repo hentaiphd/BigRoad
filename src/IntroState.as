@@ -297,6 +297,7 @@ package{
                     } else if (current_scene == 1) {
                         black_bg.alpha += .01;
                     } else if (current_scene == 2) {
+                        girl_text_two.alpha = 0;
                     }
                 }
             } else if (current_state == STATE_TRUCK2) {
