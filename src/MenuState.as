@@ -16,7 +16,7 @@ package{
             super.update();
 
             if(FlxG.mouse.pressed()){
-                FlxG.switchState(new PlayState());
+                FlxG.switchState(new IntroState());
             }
         }
     }

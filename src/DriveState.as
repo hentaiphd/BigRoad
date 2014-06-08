@@ -63,15 +63,15 @@ package{
             planet.x -= .5;
             planet.y += 2;
 
-            if(planets_visited >= 3){
-                FlxG.switchState(new OutroState());
-            }
-
             if(new Date().valueOf() - startTime.valueOf() > 4000){
                 black_bg.alpha += .1;
             }
             if(black_bg.alpha == 1){
-                FlxG.switchState(new PlayState(planets_visited,plushies_delivered));
+                if(planets_visited >= 3){
+                    FlxG.switchState(new OutroState());
+                } else {
+                    FlxG.switchState(new PlayState(planets_visited,plushies_delivered));
+                }
             }
         }
     }
