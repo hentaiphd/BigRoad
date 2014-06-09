@@ -28,6 +28,8 @@ package
         public static var m_physScale:Number = 30
         public var targets:Array;
 
+        public var time_bar:TimeCounter;
+
         public var launcher:Launcher = null;
         public var truckSprite:FlxSprite;
         public var planetCloseSprite:FlxSprite;
@@ -39,6 +41,7 @@ package
         public var click_counter:Number = 0;
         public var planets_visited:Number = 0;
         public var plushies_delivered:Number = 0;
+        public var time_remaining:Number = 0;
 
         public var fadein:Boolean = true;
         public var animLock:Boolean = false;
@@ -48,10 +51,11 @@ package
         public var help_text:FlxSprite;
         public var starting_mouse_x:Number;
 
-        public function PlayState(planet_count:Number = 0, plushie_count:Number = 0):void{
+        public function PlayState(planet_count:Number = 0, plushie_count:Number = 0, time_remaining:Number=0):void{
             planet_count++;
             planets_visited = planet_count;
             plushies_delivered = plushie_count;
+            this.time_remaining = time_remaining;
         }
 
         override public function create():void{
@@ -97,6 +101,13 @@ package
 
             launcher = new Launcher(m_world);
 
+            time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
+            time_bar.set_time(time_remaining);
+            if (planets_visited == 3) {
+                time_bar.set_time(23*50);
+            }
+            time_bar.total_frames = BigRoad.total_time;
+
             if (planets_visited == 1) {
                 smoke = new FlxSprite(0, 0);
                 smoke.makeGraphic(320, 240, 0xaa000000);
@@ -105,6 +116,8 @@ package
                 help_text = new FlxSprite(20,100);
                 help_text.loadGraphic(ImgHelp,false,false,228,48);
                 add(help_text);
+
+                time_bar.running = false;
             } else {
                 startTime = new Date().valueOf();
             }
@@ -134,6 +147,7 @@ package
                     if (startTime == -1) {
                         startTime = new Date().valueOf();
                     }
+                    time_bar.running = true;
                 }
             }
 
@@ -161,7 +175,7 @@ package
                     truckSprite.play("idle");
                 }
                 if(cur_time - startTime > 17000){
-                    FlxG.switchState(new DriveState(planets_visited,plushies_delivered));
+                    FlxG.switchState(new DriveState(planets_visited,plushies_delivered,time_remaining - timeFrame));
                 }
             }
 
@@ -170,6 +184,7 @@ package
             }
 
             launcher.update();
+            time_bar.update();
 
             cursorSprite.x = FlxG.mouse.x;
             cursorSprite.y = FlxG.mouse.y;

@@ -9,15 +9,19 @@ package{
         public var startTime:Date;
         public var planets_visited:Number;
         public var plushies_delivered:Number;
+        public var time_remaining:Number;
+        public var timeFrame:Number = 0;
 
         public var planet:FlxSprite;
         public var truck:FlxSprite;
         public var bg:FlxSprite;
+        public var time_bar:TimeCounter;
         public var black_bg:FlxSprite;
 
-        public function DriveState(planet_count:Number, plushie_count:Number):void{
+        public function DriveState(planet_count:Number, plushie_count:Number, time_remaining:Number):void{
             planets_visited = planet_count;
             plushies_delivered = plushie_count;
+            this.time_remaining = time_remaining;
         }
 
         override public function create():void{
@@ -51,11 +55,18 @@ package{
             black_bg.makeGraphic(320,480,0xff000000);
             this.add(black_bg);
             black_bg.alpha = 0;
+
+            time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
+            time_bar.set_time(time_remaining);
+            time_bar.total_frames = BigRoad.total_time;
         }
 
         override public function update():void{
             super.update();
+            timeFrame++;
             bg.y -= .5;
+
+            time_bar.update();
 
             planet.scale.x += .05;
             planet.scale.y += .05;
@@ -66,7 +77,7 @@ package{
                 if(planets_visited >= 3){
                     FlxG.switchState(new OutroState());
                 } else {
-                    FlxG.switchState(new PlayState(planets_visited,plushies_delivered));
+                    FlxG.switchState(new PlayState(planets_visited,plushies_delivered, time_remaining - timeFrame));
                 }
             }
         }
