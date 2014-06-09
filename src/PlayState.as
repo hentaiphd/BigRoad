@@ -51,7 +51,7 @@ package
         public var help_text:FlxSprite;
         public var starting_mouse_x:Number;
 
-        public function PlayState(planet_count:Number = 0, plushie_count:Number = 0, time_remaining:Number=0):void{
+        public function PlayState(planet_count:Number = 0, plushie_count:Number = 0, time_remaining:Number=BigRoad.total_time):void{
             planet_count++;
             planets_visited = planet_count;
             plushies_delivered = plushie_count;
