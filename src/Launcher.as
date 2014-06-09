@@ -49,8 +49,8 @@ package {
             x = 20;
             y = 50;
 
-            throwStartAngle = armDrawAngle = 135;
-            armDrawAngleArc = 45;
+            throwStartAngle = armDrawAngle = 175;
+            armDrawAngleArc = 35;
 
             baseSprite = new FlxSprite(x, y);
             baseSprite.loadGraphic(ImgDad, true, true, 48, 48, true);
@@ -111,6 +111,11 @@ package {
                     rotateBack = false;
                 }
             } else if (_state == STATE_WINDUP) {
+                if (!FlxG.mouse.pressed()) {
+                    _state = STATE_RELEASE;
+                    armDrawAngle = 0;
+                    thisThrowAngle = 90;
+                }
                 if(timeFrame % 5 == 0) {
                     armDrawAngle -= 30;
                 }
