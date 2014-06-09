@@ -40,7 +40,7 @@ package{
             planet.scale.x = .5;
             planet.scale.y = .5;
 
-            truck = new FlxSprite(100,20);
+            truck = new FloatySprite(100,20);
             truck.loadGraphic(Truck,true,false,100,64);
             truck.addAnimation("idle", [0], 1, false);
             truck.addAnimation("open", [1], 1, false);

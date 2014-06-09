@@ -21,6 +21,7 @@ package {
         public var armSprite:FlxSprite;
         public var projectiles:Array;
         public var curProjectile:Projectile;
+        public var originY:Number;
 
         public var rotateBack:Boolean = false;
         public var armDrawAngle:Number;
@@ -47,7 +48,7 @@ package {
             curProjectile.spr.alpha = 0;
 
             x = 20;
-            y = 50;
+            y = originY = 50;
 
             throwStartAngle = armDrawAngle = 175;
             armDrawAngleArc = 35;
@@ -88,7 +89,7 @@ package {
 
             if (!_active) return;
 
-            setPosition(new DHPoint(FlxG.mouse.x, y));
+            setPosition(new DHPoint(FlxG.mouse.x, originY + Math.sin(timeFrame*.05)*5));
 
             if (_state == STATE_IDLE) {
                 if(FlxG.mouse.pressed()) {

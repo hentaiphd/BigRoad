@@ -57,7 +57,7 @@ package
             _bg.loadGraphic(ImgBg,false,false,640,480);
             add(_bg);
 
-            truckSprite = new FlxSprite(100, 20);
+            truckSprite = new FloatySprite(100, 20);
             truckSprite.loadGraphic(ImgTruck, true, true, 100, 64, true);
             truckSprite.addAnimation("idle", [0], 1, false);
             truckSprite.addAnimation("open", [1], 1, false);
