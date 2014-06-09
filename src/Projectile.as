@@ -83,8 +83,8 @@ package {
             body = m_world.CreateBody(bd);
             body.CreateFixture(fixtureDef);
 
-            var vel:b2Vec2 = new b2Vec2(3*Math.sin(angle * (Math.PI/180)),
-                                        3*Math.cos(angle * (Math.PI/180)));
+            var vel:b2Vec2 = new b2Vec2(50*Math.sin(angle * (Math.PI/180)),
+                                        50*Math.cos(angle * (Math.PI/180)));
             body.ApplyImpulse(vel, body.GetPosition());
         }
 

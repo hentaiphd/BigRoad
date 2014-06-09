@@ -136,7 +136,7 @@ package {
                         armDrawAngle += 50;
                     }
                 } else {
-                    launchProjectile(armDrawAngle);
+                    launchProjectile(thisThrowAngle);
                     lastLaunchTime = timeFrame;
                     _state = STATE_COOLDOWN;
                 }
