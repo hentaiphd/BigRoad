@@ -75,7 +75,7 @@ package{
 
             if(new Date().valueOf() - startTime.valueOf() > 4000){
                 if(planets_visited >= 3){
-                    FlxG.switchState(new OutroState());
+                    FlxG.switchState(new OutroState(plushies_delivered));
                 } else {
                     FlxG.switchState(new PlayState(planets_visited,plushies_delivered, time_remaining - timeFrame));
                 }

@@ -6,9 +6,11 @@ package{
 
         public var bg:FlxSprite;
         public var startTime:Date;
+        public var score_text:FlxText;
+        public var plushies_delivered:Number = 0;
 
-        public function OutroState():void{
-            //make variable ending
+        public function OutroState(plushies:Number = 0):void{
+            plushies_delivered = plushies;
         }
 
         override public function create():void{
@@ -18,6 +20,10 @@ package{
             bg = new FlxSprite(0,0);
             bg.loadGraphic(ImgBg,false,false,320,240);
             add(bg);
+
+            score_text = new FlxText(50,50,300,plushies_delivered.toString() + " plushies delivered! Space Dad is a hero!");
+            score_text.color = 0xffffffff;
+            add(score_text);
         }
 
         override public function update():void{
