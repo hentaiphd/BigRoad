@@ -145,7 +145,7 @@ package{
             this.add(sparks_r_group);
 
             for(i = 0; i < 20; i++){
-                sparks_l = new WigglySprite(left_wing.x+Math.random()*20,left_wing.y + (Math.random()*100)+20);
+                sparks_l = new WigglySprite(left_wing.x+Math.random()*20,left_wing.y + (Math.random()*20)+20);
                 sparks_l.loadGraphic(ImgSparks,true,false,16,16);
                 sparks_l.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
                 sparks_l.play("spark");
@@ -157,7 +157,7 @@ package{
             }
 
             for(i = 0; i < 20; i++){
-                sparks_r = new WigglySprite(right_wing.x+Math.random()*20,right_wing.y + (Math.random()*100)+20);
+                sparks_r = new WigglySprite(right_wing.x+Math.random()*20,right_wing.y + (Math.random()*20)+20);
                 sparks_r.loadGraphic(ImgSparks,true,false,16,16);
                 sparks_r.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
                 sparks_r.play("spark");
@@ -337,8 +337,12 @@ package{
                         boost_flash.kill();
                         left_wing.play("leftwing_flare");
                         right_wing.play("rightwing_flare");
-                        sparks_l.alpha = 1;
-                        sparks_r.alpha = 1;
+                        for(i = 0; i < sparks_l_group.length; i++){
+                            sparks_l_group.members[i].alpha = 1;
+                        }
+                        for(i = 0; i < sparks_r_group.length; i++){
+                            sparks_r_group.members[i].alpha = 1;
+                        }
                         boost_speed(true);
                         FlxG.play(SndTakeoff, .6);
                         incrementScene();
