@@ -50,7 +50,7 @@ package {
             x = 20;
             y = originY = 50;
 
-            throwStartAngle = armDrawAngle = 175;
+            throwStartAngle = armDrawAngle = 155;
             armDrawAngleArc = 35;
 
             baseSprite = new FlxSprite(x, y);

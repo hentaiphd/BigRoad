@@ -19,7 +19,6 @@ package {
             _origin = pos;
             move_interval = Math.floor(Math.random()*20);
 
-            rand_alien = Math.floor(Math.random()*4)+1;
             if(planet == 1){
                 num_types = 4;
                 loadGraphic(Planet1Aliens,true,false,48,64,true);
@@ -32,10 +31,10 @@ package {
             } else {
                 makeGraphic(15, 15, 0xffffff00);
             }
+            rand_alien = Math.floor(Math.random()*num_types);
 
             for (var i:int = 0; i < num_types; i++) {
                 if(planet == 1 || planet == 2){
-                    addAnimation("alien"+i+"_waiting",[i*2],12,false);
                     addAnimation("alien"+i+"_happy",[i*2+1],12,false);
                 } else {
                     addAnimation("alien"+i+"_happy",[i],12,false);
