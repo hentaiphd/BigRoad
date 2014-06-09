@@ -207,13 +207,13 @@ package{
             this.add(apt_bg);
             apt_bg.play("no_bubble");
 
-            friend_text = new FlxSprite(30,45);
-            friend_text.loadGraphic(ImgText1,false,false,209,41);
+            friend_text = new FlxSprite(30,35);
+            friend_text.loadGraphic(ImgText1,false,false,209,63);
             friend_text.alpha = 0;
             add(friend_text);
 
-            girl_text = new FlxSprite(95,67);
-            girl_text.loadGraphic(ImgText2,false,false,209,41);
+            girl_text = new FlxSprite(95,57);
+            girl_text.loadGraphic(ImgText2,false,false,209,63);
             girl_text.alpha = 0;
             add(girl_text);
 

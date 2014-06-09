@@ -69,6 +69,7 @@ package
             planetCloseSprite.loadGraphic(ImgPlanetClose, true, true, 320, 160, true);
             planetCloseSprite.addAnimation("1", [0], 1, false);
             planetCloseSprite.addAnimation("2", [1], 1, false);
+            planetCloseSprite.addAnimation("3", [2], 1, false);
             planetCloseSprite.play(planets_visited + "");
             add(planetCloseSprite);
             planetCloseSprite.alpha = 0;

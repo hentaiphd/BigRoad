@@ -2,8 +2,9 @@ package {
     import org.flixel.*;
 
     public class GroundTarget extends FlxSprite {
-        [Embed(source="../assets/lisafrank.png")] private var Planet2Aliens:Class;
-        [Embed(source="../assets/cabbagepatch.png")] private var Planet3Aliens:Class;
+        [Embed(source="../assets/lisafrank.png")] private var Planet1Aliens:Class;
+        [Embed(source="../assets/cabbagepatch.png")] private var Planet2Aliens:Class;
+        [Embed(source="../assets/finalfantasy.png")] private var Planet3Aliens:Class;
 
         public var _active:Boolean = true;
         public var rand_alien:Number;
@@ -21,8 +22,11 @@ package {
             rand_alien = Math.floor(Math.random()*4)+1;
             if(planet == 1){
                 num_types = 4;
-                loadGraphic(Planet2Aliens,true,false,48,64,true);
+                loadGraphic(Planet1Aliens,true,false,48,64,true);
             } else if(planet == 2){
+                num_types = 3;
+                loadGraphic(Planet2Aliens,true,false,48,64,true);
+            } else if(planet == 3){
                 num_types = 3;
                 loadGraphic(Planet3Aliens,true,false,48,64,true);
             } else {
@@ -30,8 +34,12 @@ package {
             }
 
             for (var i:int = 0; i < num_types; i++) {
-                addAnimation("alien"+i+"_waiting",[i*2],12,false);
-                addAnimation("alien"+i+"_happy",[i*2+1],12,false);
+                if(planet == 1 || planet == 2){
+                    addAnimation("alien"+i+"_waiting",[i*2],12,false);
+                    addAnimation("alien"+i+"_happy",[i*2+1],12,false);
+                } else {
+                    addAnimation("alien"+i+"_happy",[i],12,false);
+                }
             }
         }
 
@@ -39,10 +47,8 @@ package {
             super.update();
             time_frame++;
 
-            play("alien"+rand_alien+"_waiting");
+            play("alien"+rand_alien+"_happy");
             if(_active == false){
-                play("alien"+rand_alien+"_happy");
-
                 this.y += .5;
                 if(this.y > FlxG.height){
                     FlxG.state.remove(this);
