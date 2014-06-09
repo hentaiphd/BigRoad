@@ -205,7 +205,7 @@ package {
         public function targetCollide(tar:GroundTarget, p:FlxSprite):void {
             var proj:Projectile = getProjectileFromSprite(p);
             if (proj) {
-                proj.destroy();
+                proj.collided();
             }
         }
 

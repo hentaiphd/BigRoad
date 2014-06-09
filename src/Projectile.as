@@ -17,6 +17,8 @@ package {
         public var x:Number, y:Number;
         public var width:Number, height:Number;
 
+        public var spin:Boolean = false;
+
         public function Projectile(world:b2World) {
             x = 0;
             y = 0;
@@ -45,11 +47,24 @@ package {
                 y = origin.y + 20*Math.cos((launchAngle) * (Math.PI/180));
             }
 
-            spr.x = x;
-            spr.y = y;
-
             if (x > FlxG.width/FlxG.camera.zoom || x < 0 || y < 0) {
                 destroy();
+            }
+
+            if(spin){
+                spr.angle += 5;
+                spr.scale.x -= .01;
+                spr.scale.y -= .01;
+                spr.y++;
+
+                if(spr.scale.x <= 0){
+                    if(spr.scale.y <= 0){
+                        destroy();
+                    }
+                }
+            } else {
+                spr.x = x;
+                spr.y = y;
             }
         }
 
@@ -71,6 +86,10 @@ package {
             var vel:b2Vec2 = new b2Vec2(3*Math.sin(angle * (Math.PI/180)),
                                         3*Math.cos(angle * (Math.PI/180)));
             body.ApplyImpulse(vel, body.GetPosition());
+        }
+
+        public function collided():void{
+            spin = true;
         }
 
         public function destroy():void {

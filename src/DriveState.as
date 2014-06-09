@@ -21,7 +21,6 @@ package{
         }
 
         override public function create():void{
-            FlxG.mouse.hide();
             startTime = new Date();
 
             bg = new FlxSprite(0,0);
@@ -64,9 +63,6 @@ package{
             planet.y += 2;
 
             if(new Date().valueOf() - startTime.valueOf() > 4000){
-                black_bg.alpha += .1;
-            }
-            if(black_bg.alpha == 1){
                 if(planets_visited >= 3){
                     FlxG.switchState(new OutroState());
                 } else {
