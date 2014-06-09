@@ -17,6 +17,7 @@ package
         [Embed(source="../assets/planet_close.png")] private var ImgPlanetClose:Class;
         [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/instructions.png")] private var ImgHelp:Class;
+        [Embed(source="../assets/cursor.png")] private var ImgCursor:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
 
         public var _bg:FlxSprite;
@@ -31,6 +32,7 @@ package
         public var truckSprite:FlxSprite;
         public var planetCloseSprite:FlxSprite;
         public var planet:FlxSprite;
+        public var cursorSprite:FlxSprite;
 
         public var startTime:Number = -1;
 
@@ -108,6 +110,9 @@ package
             }
 
             starting_mouse_x = FlxG.mouse.x;
+            cursorSprite = new FlxSprite(FlxG.mouse.x, FlxG.mouse.y);
+            cursorSprite.loadGraphic(ImgCursor, true, true, 20, 20, true);
+            add(cursorSprite);
 
             if(FlxG.music == null){
                 FlxG.playMusic(SndBGM);
@@ -165,6 +170,9 @@ package
             }
 
             launcher.update();
+
+            cursorSprite.x = FlxG.mouse.x;
+            cursorSprite.y = FlxG.mouse.y;
 
             m_world.Step(1.0/30.0, 10, 10);
             //m_world.DrawDebugData();
