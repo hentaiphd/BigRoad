@@ -94,11 +94,13 @@ package {
             setPosition(new DHPoint(FlxG.mouse.x, originY + Math.sin(timeFrame*.05)*5));
 
             if (_state == STATE_IDLE) {
+                curProjectile.spr.visible = false;
                 if(FlxG.mouse.pressed()) {
                     _state = STATE_WINDUP;
                     baseSprite.play("throw");
                     armSprite.visible = true;
                     armDrawAngle = 0;
+                    curProjectile.spr.visible = true;
                 }
             } else if (_state == STATE_WIGGLE) {
                 if (!FlxG.mouse.pressed()) {
@@ -196,6 +198,7 @@ package {
             curProjectile.launch(angle);
             projectiles.push(curProjectile);
             curProjectile = new Projectile(m_world);
+            curProjectile.spr.visible = false;
         }
 
         public function testTargetCollide(tar:GroundTarget, _callback:Function):void {
