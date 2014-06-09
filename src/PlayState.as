@@ -79,6 +79,7 @@ package
             planetCloseSprite.addAnimation("1", [0], 1, false);
             planetCloseSprite.addAnimation("2", [1], 1, false);
             planetCloseSprite.addAnimation("3", [2], 1, false);
+            planetCloseSprite.addAnimation("4", [2], 1, false);
             planetCloseSprite.play(planets_visited + "");
             add(planetCloseSprite);
             planetCloseSprite.alpha = 0;
@@ -88,11 +89,14 @@ package
             planet.addAnimation("1",[0],1,false);
             planet.addAnimation("2",[1],1,false);
             planet.addAnimation("3",[2],1,false);
+            planet.addAnimation("4",[2],1,false);
             if(planets_visited == 1){
                 planet.play("2");
             } else if(planets_visited == 2){
                 planet.play("3");
             } else if(planets_visited == 3){
+                planet.play("4");
+            } else if(planets_visited == 4){
                 planet.play("1");
             }
             add(planet);

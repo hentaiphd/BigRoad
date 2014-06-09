@@ -29,6 +29,9 @@ package {
             } else if(planet == 3){
                 num_types = 3;
                 loadGraphic(Planet3Aliens,true,false,48,64,true);
+            } else if(planet == 4){
+                num_types = 3;
+                loadGraphic(Planet3Aliens,true,false,48,64,true);
             } else {
                 makeGraphic(15, 15, 0xffffff00);
             }
