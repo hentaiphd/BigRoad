@@ -4,7 +4,7 @@ package{
     [Frame(factoryClass="Preloader")]
 
     public class BigRoad extends FlxGame{
-        public static const total_time:Number = 50*84;
+        public static const total_time:Number = 50*114;//50*84;
         public static const total_planets:Number = 4;
 
         public function BigRoad(){

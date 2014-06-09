@@ -44,7 +44,8 @@ package{
             planet.addAnimation("1",[0],1,false);
             planet.addAnimation("2",[1],1,false);
             planet.addAnimation("3",[2],1,false);
-            planet.addAnimation("4",[2],1,false);
+            planet.addAnimation("5",[3],1,false);
+            planet.addAnimation("4",[4],1,false);
             if(planets_visited == 0){
                 planet.play("2");
             } else if(planets_visited == 1){
@@ -52,9 +53,9 @@ package{
             } else if(planets_visited == 2){
                 planet.play("4");
             } else if(planets_visited == 3){
-                planet.play("1");
+                planet.play("5");
             } else if(planets_visited == 4){
-                planet.play("2");
+                planet.play("1");
             }
             add(planet);
             planet.scale.x = .5;
@@ -65,7 +66,8 @@ package{
             planet.addAnimation("1",[0],1,false);
             planet.addAnimation("2",[1],1,false);
             planet.addAnimation("3",[2],1,false);
-            planet.addAnimation("4",[2],1,false);
+            planet.addAnimation("5",[3],1,false);
+            planet.addAnimation("4",[4],1,false);
             if(planets_visited == 1){
                 planet.play("2");
             } else if(planets_visited == 2){
@@ -73,6 +75,8 @@ package{
             } else if(planets_visited == 3){
                 planet.play("4");
             } else if(planets_visited == 4){
+                planet.play("5");
+            } else if(planets_visited == 5){
                 planet.play("1");
             }
             add(planet);
@@ -92,7 +96,7 @@ package{
             this.add(black_bg);
             black_bg.alpha = 0;
 
-            if (planets_visited != 0) {
+            if (planets_visited != 0 && planets_visited != BigRoad.total_planets) {
                 time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
                 time_bar.set_time(time_remaining);
                 time_bar.total_frames = BigRoad.total_time;

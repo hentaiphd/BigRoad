@@ -122,13 +122,13 @@ package{
             if(new Date().valueOf() - startTime.valueOf() > 2000){
                 truck.play("looking");
                 dash_pres.alpha += .01;
-            }
-
-            if(new Date().valueOf() - startTime.valueOf() > 4000){
                 if (!sndLock) {
                     FlxG.play(SndHolo);
                     sndLock = true;
                 }
+            }
+
+            if(new Date().valueOf() - startTime.valueOf() > 4000){
                 pres_icon.alpha += .01;
                 if(pres_box.alpha < .75){
                     pres_box.alpha += .01;

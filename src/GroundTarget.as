@@ -5,6 +5,7 @@ package {
         [Embed(source="../assets/lisafrank.png")] private var Planet1Aliens:Class;
         [Embed(source="../assets/cabbagepatch.png")] private var Planet2Aliens:Class;
         [Embed(source="../assets/finalfantasy.png")] private var Planet3Aliens:Class;
+        [Embed(source="../assets/zeonon.png")] private var Planet4Aliens:Class;
 
         public var _active:Boolean = true;
         public var rand_alien:Number;
@@ -30,8 +31,8 @@ package {
                 num_types = 3;
                 loadGraphic(Planet3Aliens,true,false,48,64,true);
             } else if(planet == 4){
-                num_types = 3;
-                loadGraphic(Planet3Aliens,true,false,48,64,true);
+                num_types = 2;
+                loadGraphic(Planet4Aliens,true,false,48,64,true);
             } else {
                 makeGraphic(15, 15, 0xffffff00);
             }

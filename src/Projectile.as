@@ -26,7 +26,7 @@ package {
             height = 32;
 
             spr = new FlxSprite(0, 0);
-            var rand:Number = Math.floor(Math.random()*3);
+            var rand:Number = Math.floor(Math.random()*4);
             spr.loadGraphic(ImgPlushie, true, false, width, height);
             spr.addAnimation("plush",[rand],1,false);
             spr.play("plush");
