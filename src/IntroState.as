@@ -15,6 +15,9 @@ package{
         [Embed(source="../assets/intro_text_1.png")] private var ImgText1:Class;
         [Embed(source="../assets/intro_text_2.png")] private var ImgText2:Class;
         [Embed(source="../assets/intro_text_3.png")] private var ImgText3:Class;
+        [Embed(source="../assets/ambience.mp3")] private var SndAmbience:Class;
+        [Embed(source="../assets/truckloop.mp3")] private var SndTruck:Class;
+        [Embed(source="../assets/takeoff.mp3")] private var SndTakeoff:Class;
 
         public var road:FlxSprite;
         public var trees_left:FlxGroup;
@@ -65,6 +68,10 @@ package{
         public static const STATE_GIRLS2:Number = 2;
         public static const STATE_TRUCK2:Number = 3;
         public var current_state:Number = STATE_GIRLS1;
+
+        public var truckSound:FlxSound;
+        public var ambienceSound:FlxSound;
+        public var truckVolumeLimit:Number = .2;
 
         public var debug_text:FlxText;
 
@@ -229,6 +236,15 @@ package{
 
             debug_text = new FlxText(10,10,500,"");
             this.add(debug_text);
+
+            truckSound = new FlxSound();
+            truckSound.loadEmbedded(SndTruck, true);
+            truckSound.volume = 0;
+            truckSound.play();
+
+            ambienceSound = new FlxSound();
+            ambienceSound.loadEmbedded(SndAmbience, true);
+            ambienceSound.play();
         }
 
         override public function update():void{
@@ -262,6 +278,7 @@ package{
                     } else if (current_scene == 2) {
                     } else if (current_scene == 3) {
                         black_bg.alpha += .01;
+                        ambienceSound.volume -= .01;
                     } else if (current_scene == 4) {
                     }
                 }
@@ -272,12 +289,15 @@ package{
                     } else if (current_scene == 1) {
                         apt_bg.alpha = 1;
                         changeState(STATE_GIRLS2, 5*_fps);
+                        FlxG.playMusic(SndAmbience);
                     }
                 } else {
                     if (current_scene == 0) {
                         black_bg.alpha -= .01;
+                        fadeInTruckSound();
                     } else if (current_scene == 1) {
                         black_bg.alpha += .01;
+                        truckSound.volume -= .01;
                     }
                 }
                 playRoadLoop();
@@ -295,24 +315,19 @@ package{
                 } else {
                     if (current_scene == 0) {
                         black_bg.alpha -= .01;
+                        ambienceSound.volume += .01;
                         girl_text_two.alpha += .01;
                     } else if (current_scene == 1) {
                         black_bg.alpha += .01;
                     } else if (current_scene == 2) {
+                        ambienceSound.volume -= .01;
                         girl_text_two.alpha = 0;
                     }
                 }
             } else if (current_state == STATE_TRUCK2) {
                 if (shouldIncrementScene()) {
                     if (current_scene == 0) {
-                        if(FlxG.music == null){
-                            FlxG.playMusic(SndBGM);
-                        } else {
-                            FlxG.music.resume();
-                            if(!FlxG.music.active){
-                                FlxG.playMusic(SndBGM);
-                            }
-                        }
+                        FlxG.playMusic(SndBGM, .8);
                         incrementScene();
                     } else if (current_scene == 1) {
                         this.add(boost_flash);
@@ -325,6 +340,7 @@ package{
                         sparks_l.alpha = 1;
                         sparks_r.alpha = 1;
                         boost_speed(true);
+                        FlxG.play(SndTakeoff, .6);
                         incrementScene();
                     } else if (current_scene == 3) {
                         boost_speed(true);
@@ -334,10 +350,13 @@ package{
                     } else if (current_scene == 5) {
                         incrementScene(6*_fps);
                     } else if (current_scene == 6) {
+                        truckSound.stop();
+                        ambienceSound.stop();
                         FlxG.switchState(new CloseUpIntroState());
                     }
                 } else {
                     if (current_scene == 0) {
+                        fadeInTruckSound();
                         black_bg.alpha -= .01;
                     } else if (current_scene == 1) {
                         left_wing.alpha += .01;
@@ -364,6 +383,12 @@ package{
             }
 
             //debug_text.text = "scene: " + current_scene.toString() + " state: " + current_state.toString() + " this length: " + current_scene_length.toString();
+        }
+
+        public function fadeInTruckSound():void {
+            if (truckSound.volume < truckVolumeLimit) {
+                truckSound.volume += .01;
+            }
         }
 
         public function updateSparks():void {

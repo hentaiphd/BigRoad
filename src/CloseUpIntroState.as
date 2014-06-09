@@ -7,6 +7,7 @@ package{
         [Embed(source="../assets/holopres.png")] private var ImgDashPres:Class;
         [Embed(source="../assets/holopresface.png")] private var ImgPres:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
+        [Embed(source="../assets/hologram2.mp3")] private var SndHolo:Class;
         [Embed(source="../assets/pres_text_1.png")] private var ImgText1:Class;
         [Embed(source="../assets/pres_text_2.png")] private var ImgText2:Class;
         [Embed(source="../assets/pres_text_3.png")] private var ImgText3:Class;
@@ -31,6 +32,8 @@ package{
         public var pres_text_4:FlxSprite;
         public var current_text:Number = 0;
         public var float:String = "up";
+
+        public var sndLock:Boolean = false;
 
         public var debug_text:FlxText;
 
@@ -122,6 +125,10 @@ package{
             }
 
             if(new Date().valueOf() - startTime.valueOf() > 4000){
+                if (!sndLock) {
+                    FlxG.play(SndHolo);
+                    sndLock = true;
+                }
                 pres_icon.alpha += .01;
                 if(pres_box.alpha < .75){
                     pres_box.alpha += .01;

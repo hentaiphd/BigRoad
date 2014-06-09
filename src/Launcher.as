@@ -12,6 +12,7 @@ package {
     public class Launcher extends FlxSprite{
         [Embed(source="../assets/dad.png")] private var ImgDad:Class;
         [Embed(source="../assets/dad_arm.png")] private var ImgDadArm:Class;
+        [Embed(source="../assets/throw.mp3")] private var SndThrow:Class;
 
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
@@ -101,6 +102,7 @@ package {
             } else if (_state == STATE_WIGGLE) {
                 if (!FlxG.mouse.pressed()) {
                     _state = STATE_RELEASE;
+                    FlxG.play(SndThrow, .7);
                     thisThrowAngle = armDrawAngle + 180;
                 }
                 if(timeFrame % 3 == 0) {
@@ -114,6 +116,7 @@ package {
             } else if (_state == STATE_WINDUP) {
                 if (!FlxG.mouse.pressed()) {
                     _state = STATE_RELEASE;
+                    FlxG.play(SndThrow, .7);
                     armDrawAngle = 0;
                     thisThrowAngle = 90;
                 }
@@ -146,7 +149,7 @@ package {
             armSprite.x = baseSprite.x + 19;
             armSprite.y = baseSprite.y - 20;
             armSprite.angle = 180 - armDrawAngle;
-            curProjectile.update(new FlxPoint(x+19, y), armDrawAngle);
+            curProjectile.update(new FlxPoint(x+13, y), armDrawAngle);
         }
 
         public function resetArm():void {

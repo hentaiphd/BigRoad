@@ -20,6 +20,7 @@ package
         [Embed(source="../assets/cursor.png")] private var ImgCursor:Class;
         [Embed(source="../assets/timertext.png")] private var ImgTimerText:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
+        [Embed(source="../assets/success.mp3")] private var SndCatch:Class;
 
         public var _bg:FlxSprite;
         public var debugText:FlxText;
@@ -217,6 +218,7 @@ package
                 tar.makeInactive();
                 setTimeout(addNewTarget, Math.random()*3000);
                 plushies_delivered++;
+                FlxG.play(SndCatch, .5);
             }
         }
 
