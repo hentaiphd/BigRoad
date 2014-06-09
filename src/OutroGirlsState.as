@@ -33,7 +33,7 @@ package{
             outro_text_1.alpha = 0;
 
             FlxG.music.stop();
-            FlxG.play(SngAmbience, .7);
+            FlxG.play(SndAmbience, .7);
         }
 
         override public function update():void{
