@@ -147,7 +147,7 @@ package
             super.update();
 
             if (planets_visited == 1) {
-                if (FlxG.mouse.x != starting_mouse_x) {
+                if (FlxG.mouse.justPressed()) {
                     remove(smoke);
                     remove(help_text);
                     if (startTime == -1) {

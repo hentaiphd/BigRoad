@@ -45,8 +45,6 @@ package {
         public function Launcher(world:b2World) {
             m_world = world;
             projectiles = new Array();
-            curProjectile = new Projectile(m_world);
-            curProjectile.spr.alpha = 0;
 
             x = 20;
             y = originY = 50;
@@ -65,6 +63,9 @@ package {
             armSprite.loadGraphic(ImgDadArm, true, true, 8, 64, true);
             armSprite.visible = false;
             FlxG.state.add(armSprite);
+
+            curProjectile = new Projectile(m_world);
+            curProjectile.spr.alpha = 0;
 
             debugText = new FlxText(100,100,100,"");
             FlxG.state.add(debugText);
