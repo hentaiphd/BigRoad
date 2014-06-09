@@ -5,6 +5,7 @@ package{
         [Embed(source="../assets/planet.png")] private var Planet2:Class;
         [Embed(source="../assets/gametruck.png")] private var Truck:Class;
         [Embed(source="../assets/space1.png")] private var Bg:Class;
+        [Embed(source="../assets/timertext.png")] private var ImgTimerText:Class;
         public var now:Date;
         public var startTime:Date;
         public var planets_visited:Number;
@@ -17,6 +18,7 @@ package{
         public var bg:FlxSprite;
         public var time_bar:TimeCounter;
         public var black_bg:FlxSprite;
+        public var timer_text:FlxSprite;
 
         public function DriveState(planet_count:Number, plushie_count:Number, time_remaining:Number):void{
             planets_visited = planet_count;
@@ -59,6 +61,9 @@ package{
             time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
             time_bar.set_time(time_remaining);
             time_bar.total_frames = BigRoad.total_time;
+            timer_text = new FlxSprite(40,5);
+            timer_text.loadGraphic(ImgTimerText,false,false,73,8);
+            add(timer_text);
         }
 
         override public function update():void{

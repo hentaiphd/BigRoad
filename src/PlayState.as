@@ -18,6 +18,7 @@ package
         [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/instructions.png")] private var ImgHelp:Class;
         [Embed(source="../assets/cursor.png")] private var ImgCursor:Class;
+        [Embed(source="../assets/timertext.png")] private var ImgTimerText:Class;
         [Embed(source="../assets/spacedad.mp3")] private var SndBGM:Class;
 
         public var _bg:FlxSprite;
@@ -50,6 +51,7 @@ package
         public var smoke:FlxSprite;
         public var help_text:FlxSprite;
         public var starting_mouse_x:Number;
+        public var timer_text:FlxSprite;
 
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0, time_remaining:Number=BigRoad.total_time):void{
             planet_count++;
@@ -107,6 +109,9 @@ package
                 time_bar.set_time(23*50);
             }
             time_bar.total_frames = BigRoad.total_time;
+            timer_text = new FlxSprite(40,5);
+            timer_text.loadGraphic(ImgTimerText,false,false,73,8);
+            add(timer_text);
 
             if (planets_visited == 1) {
                 smoke = new FlxSprite(0, 0);
