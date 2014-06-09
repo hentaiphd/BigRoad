@@ -59,10 +59,11 @@ package {
         }
 
         public function update():void {
-            if (!this.running) return;
-            this.frame_lifetime++;
-            if (this.frames_remaining > 0) {
-                this.frames_remaining--;
+            if (this.running) {
+                this.frame_lifetime++;
+                if (this.frames_remaining > 0) {
+                    this.frames_remaining--;
+                }
             }
 
             var greatest_x:Number = 0;

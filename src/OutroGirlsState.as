@@ -3,6 +3,7 @@ package{
 
     public class OutroGirlsState extends FlxState{
         [Embed(source="../assets/frontsteps.png")] private var ImgAptBg:Class;
+        [Embed(source="../assets/ambience.mp3")] private var SndAmbience:Class;
         [Embed(source="../assets/outro_text_1.png")] private var ImgText:Class;
 
         public var apt_bg:FlxSprite;
@@ -32,6 +33,7 @@ package{
             outro_text_1.alpha = 0;
 
             FlxG.music.stop();
+            FlxG.play(SngAmbience, .7);
         }
 
         override public function update():void{

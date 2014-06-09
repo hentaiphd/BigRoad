@@ -18,7 +18,7 @@ package{
         public var planet:FlxSprite;
         public var truck:FlxSprite;
         public var bg:FlxSprite;
-        public var time_bar:TimeCounter;
+        public var time_bar:TimeCounter = null;
         public var black_bg:FlxSprite;
         public var timer_text:FlxSprite;
 
@@ -45,13 +45,13 @@ package{
             planet.addAnimation("2",[1],1,false);
             planet.addAnimation("3",[2],1,false);
             if(planets_visited == 0){
-                planet.play("1");
-            } else if(planets_visited == 1){
                 planet.play("2");
-            } else if(planets_visited == 2){
+            } else if(planets_visited == 1){
                 planet.play("3");
-            } else if(planets_visited == 3){
+            } else if(planets_visited == 2){
                 planet.play("1");
+            } else if(planets_visited == 3){
+                planet.play("2");
             }
             add(planet);
             planet.scale.x = .5;
@@ -86,12 +86,14 @@ package{
             this.add(black_bg);
             black_bg.alpha = 0;
 
-            time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
-            time_bar.set_time(time_remaining);
-            time_bar.total_frames = BigRoad.total_time;
-            timer_text = new FlxSprite(40,5);
-            timer_text.loadGraphic(ImgTimerText,false,false,73,8);
-            add(timer_text);
+            if (planets_visited != 0) {
+                time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
+                time_bar.set_time(time_remaining);
+                time_bar.total_frames = BigRoad.total_time;
+                timer_text = new FlxSprite(40,5);
+                timer_text.loadGraphic(ImgTimerText,false,false,73,8);
+                add(timer_text);
+            }
         }
 
         override public function update():void{
@@ -99,7 +101,9 @@ package{
             timeFrame++;
             bg.y -= .5;
 
-            time_bar.update();
+            if (time_bar != null) {
+                time_bar.update();
+            }
 
             planet.scale.x += .05;
             planet.scale.y += .05;
@@ -129,7 +133,7 @@ package{
                 if(planets_visited >= 3){
                     FlxG.switchState(new OutroState(plushies_delivered));
                 } else {
-                    FlxG.switchState(new PlayState(planets_visited,plushies_delivered, time_remaining - timeFrame));
+                    FlxG.switchState(new PlayState(planets_visited,plushies_delivered, time_remaining - (planets_visited == 0 ? 0 : timeFrame)));
                 }
             }
         }
