@@ -17,6 +17,7 @@ package {
         public function GroundTarget(pos:DHPoint,planet:Number) {
             super(pos.x, pos.y);
             _origin = pos;
+
             move_interval = Math.floor(Math.random()*20);
 
             if(planet == 1){
@@ -32,6 +33,14 @@ package {
                 makeGraphic(15, 15, 0xffffff00);
             }
             rand_alien = Math.floor(Math.random()*num_types);
+
+            offset.y = height/2;
+            height = height/2;
+            y += offset.y;
+
+            offset.x = width/2;
+            width = width/2;
+            x += offset.x;
 
             for (var i:int = 0; i < num_types; i++) {
                 if(planet == 1 || planet == 2){
