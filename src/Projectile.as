@@ -8,6 +8,7 @@ package {
     import Box2D.Dynamics.Joints.*;
 
     public class Projectile {
+        [Embed(source="../assets/plushies.png")] private var ImgPlushie:Class;
         public var body:b2Body = null;
         public var spr:FlxSprite = null;
         public var m_world:b2World;
@@ -19,11 +20,14 @@ package {
         public function Projectile(world:b2World) {
             x = 0;
             y = 0;
-            width = 10;
-            height = 10;
+            width = 32;
+            height = 32;
 
             spr = new FlxSprite(0, 0);
-            spr.makeGraphic(width, height, 0xff0000ff);
+            var rand:Number = Math.floor(Math.random()*3);
+            spr.loadGraphic(ImgPlushie, true, false, width, height);
+            spr.addAnimation("plush",[rand],1,false);
+            spr.play("plush");
             FlxG.state.add(spr);
 
             m_world = world;
