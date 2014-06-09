@@ -2,7 +2,7 @@ package{
     import org.flixel.*;
 
     public class OutroState extends FlxState{
-        [Embed(source="../assets/end1.png")] private var ImgBg:Class;
+        [Embed(source="../assets/end1screenblank.png")] private var ImgBg:Class;
 
         public var bg:FlxSprite;
         public var startTime:Date;
@@ -21,8 +21,9 @@ package{
             bg.loadGraphic(ImgBg,false,false,320,240);
             add(bg);
 
-            score_text = new FlxText(50,50,300,plushies_delivered.toString() + " plushies delivered! Space Dad is a hero!");
-            score_text.color = 0xffffffff;
+            score_text = new FlxText(178,19,60,plushies_delivered.toString());
+            score_text.color = 0xff85F348;
+            score_text.size = 8;
             add(score_text);
         }
 
