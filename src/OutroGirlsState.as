@@ -30,6 +30,8 @@ package{
             outro_text_1.loadGraphic(ImgText,false,false,209,11);
             this.add(outro_text_1);
             outro_text_1.alpha = 0;
+
+            FlxG.music.stop();
         }
 
         override public function update():void{
