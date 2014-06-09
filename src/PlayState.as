@@ -84,7 +84,17 @@ package
             planetCloseSprite.alpha = 0;
 
             planet = new FlxSprite(210,65);
-            planet.loadGraphic(ImgPlanet,false,false,64,64);
+            planet.loadGraphic(ImgPlanet,true,false,64,64);
+            planet.addAnimation("1",[0],1,false);
+            planet.addAnimation("2",[1],1,false);
+            planet.addAnimation("3",[2],1,false);
+            if(planets_visited == 1){
+                planet.play("2");
+            } else if(planets_visited == 2){
+                planet.play("3");
+            } else if(planets_visited == 3){
+                planet.play("1");
+            }
             add(planet);
             planet.scale.x = .5;
             planet.scale.y = .5;

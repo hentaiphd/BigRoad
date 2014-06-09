@@ -2,9 +2,9 @@ package{
     import org.flixel.*;
 
     public class DriveState extends FlxState{
-        [Embed(source="../assets/planet.png")] private var Planet2:Class;
         [Embed(source="../assets/gametruck.png")] private var Truck:Class;
         [Embed(source="../assets/space1.png")] private var Bg:Class;
+        [Embed(source="../assets/planet.png")] private var ImgPlanet:Class;
         [Embed(source="../assets/timertext.png")] private var ImgTimerText:Class;
         [Embed(source="../assets/sparks.png")] private var ImgSpark:Class;
 
@@ -40,13 +40,35 @@ package{
             add(bg);
 
             planet = new FlxSprite(210,65);
-            planet.loadGraphic(Planet2,false,false,64,64);
+            planet.loadGraphic(ImgPlanet,true,false,64,64);
+            planet.addAnimation("1",[0],1,false);
+            planet.addAnimation("2",[1],1,false);
+            planet.addAnimation("3",[2],1,false);
+            if(planets_visited == 0){
+                planet.play("1");
+            } else if(planets_visited == 1){
+                planet.play("2");
+            } else if(planets_visited == 2){
+                planet.play("3");
+            } else if(planets_visited == 3){
+                planet.play("1");
+            }
             add(planet);
             planet.scale.x = .5;
             planet.scale.y = .5;
 
             planet = new FlxSprite(210,65);
-            planet.loadGraphic(Planet2,false,false,64,64);
+            planet.loadGraphic(ImgPlanet,true,false,64,64);
+            planet.addAnimation("1",[0],1,false);
+            planet.addAnimation("2",[1],1,false);
+            planet.addAnimation("3",[2],1,false);
+            if(planets_visited == 1){
+                planet.play("2");
+            } else if(planets_visited == 2){
+                planet.play("3");
+            } else if(planets_visited == 3){
+                planet.play("1");
+            }
             add(planet);
             planet.scale.x = .5;
             planet.scale.y = .5;

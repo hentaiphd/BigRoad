@@ -158,7 +158,7 @@ package{
                 pres_text_3.alpha -= .1;
                 pres_text_4.alpha += .1;
             } else if(current_text == 5){
-                FlxG.switchState(new PlayState(0, 0, BigRoad.total_time));
+                FlxG.switchState(new DriveState(0,0,BigRoad.total_time));
             }
         }
     }
