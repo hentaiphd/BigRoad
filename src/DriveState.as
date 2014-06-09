@@ -6,6 +6,8 @@ package{
         [Embed(source="../assets/gametruck.png")] private var Truck:Class;
         [Embed(source="../assets/space1.png")] private var Bg:Class;
         [Embed(source="../assets/timertext.png")] private var ImgTimerText:Class;
+        [Embed(source="../assets/sparks.png")] private var ImgSpark:Class;
+
         public var now:Date;
         public var startTime:Date;
         public var planets_visited:Number;
@@ -20,6 +22,8 @@ package{
         public var black_bg:FlxSprite;
         public var timer_text:FlxSprite;
 
+        public var sparks:Array;
+
         public function DriveState(planet_count:Number, plushie_count:Number, time_remaining:Number):void{
             planets_visited = planet_count;
             plushies_delivered = plushie_count;
@@ -28,6 +32,8 @@ package{
 
         override public function create():void{
             startTime = new Date();
+
+            sparks = new Array();
 
             bg = new FlxSprite(0,0);
             bg.loadGraphic(Bg,false,false,640,480);
@@ -77,6 +83,25 @@ package{
             planet.scale.y += .05;
             planet.x -= .5;
             planet.y += 2;
+
+            if (timeFrame % 1 == 0) {
+                var spark:FlxSprite = new FlxSprite(truck.x + Math.random()*60, truck.y + 35);
+                spark.loadGraphic(ImgSpark, true, true, 16, 16);
+                spark.addAnimation("spark",[Math.floor(Math.random()*7)],12,false);
+                spark.play("spark");
+                add(spark);
+                sparks.push(spark);
+            }
+
+            for (var i:int = 0; i < sparks.length; i++) {
+                var s:FlxSprite = sparks[i];
+                s.x -= 4;
+                s.y += 3;
+                if (s.x < -10) {
+                    s.visible = false;
+                    sparks.splice(i, 1);
+                }
+            }
 
             if(new Date().valueOf() - startTime.valueOf() > 4000){
                 if(planets_visited >= 3){
