@@ -79,26 +79,30 @@ package{
 
         public var can_click_through:Boolean = false;
 
+        public var _screen:ScreenManager;
+
         override public function create():void{
             FlxG.mouse.hide();
 
-            space_bg = new FlxSprite(0, 0);
+            _screen = ScreenManager.getInstance();
+
+            space_bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             space_bg.loadGraphic(ImgSpaceBG, true, true, 320, 240, true);
             add(space_bg);
 
-            earth_sprite = new FlxSprite(-100, -100);
+            earth_sprite = new FlxSprite(_screen.zero_point.x-100, _screen.zero_point.y-100);
             earth_sprite.loadGraphic(ImgEarth, true, true, 480, 480, true);
             earth_sprite.scale.x = 2;
             earth_sprite.scale.y = 2;
             add(earth_sprite);
 
-            road = new FlxSprite(0,0);
+            road = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             road.loadGraphic(ImgRoad,true,false,320,240);
             road.addAnimation("drive",[0,1,2],12,true);
             road.play("drive");
             this.add(road);
 
-            truck_pos = new FlxPoint(145,10);
+            truck_pos = new FlxPoint(_screen.zero_point.x+145, _screen.zero_point.y+10);
 
             left_wing = new WigglySprite(truck_pos.x-25,truck_pos.y+126);
             left_wing.loadGraphic(ImgWings,true,false,32,80);
@@ -206,7 +210,7 @@ package{
                 add(tree);
             }
 
-            apt_bg = new FlxSprite(0,0);
+            apt_bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             apt_bg.loadGraphic(ImgAptBg,true,false,320,480);
             apt_bg.addAnimation("no_bubble",[0],12,false);
             apt_bg.addAnimation("friend_bubble",[1],12,false);
@@ -214,22 +218,22 @@ package{
             this.add(apt_bg);
             apt_bg.play("no_bubble");
 
-            friend_text = new FlxSprite(30,35);
+            friend_text = new FlxSprite(_screen.zero_point.x+30, _screen.zero_point.y+35);
             friend_text.loadGraphic(ImgText1,false,false,209,63);
             friend_text.alpha = 0;
             add(friend_text);
 
-            girl_text = new FlxSprite(95,57);
+            girl_text = new FlxSprite(_screen.zero_point.x+95, _screen.zero_point.y+57);
             girl_text.loadGraphic(ImgText2,false,false,209,63);
             girl_text.alpha = 0;
             add(girl_text);
 
-            girl_text_two = new FlxSprite(95,82);
+            girl_text_two = new FlxSprite(_screen.zero_point.x+95, _screen.zero_point.y+82);
             girl_text_two.loadGraphic(ImgText3,false,false,209,11);
             girl_text_two.alpha = 0;
             add(girl_text_two);
 
-            black_bg = new FlxSprite(0,0);
+            black_bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             black_bg.makeGraphic(320,480,0xff000000);
             this.add(black_bg);
             black_bg.alpha = 0;
@@ -245,6 +249,8 @@ package{
             ambienceSound = new FlxSound();
             ambienceSound.loadEmbedded(SndAmbience, true);
             ambienceSound.play();
+
+            _screen.addLetterbox();
         }
 
         override public function update():void{
@@ -467,9 +473,9 @@ package{
         }
 
         public function floatSpaceBG():void {
-            if(space_bg.y < -10){
+            if(space_bg.y < _screen.zero_point.y-10){
                 float = "down";
-            } else if(space_bg.y > 10){
+            } else if(space_bg.y > _screen.zero_point.y+10){
                 float = "up";
             }
 
@@ -483,9 +489,9 @@ package{
 
         public function getNewTreePos(dir:Boolean):Number{
             if(dir){
-                return (Math.random()*50)+210;
+                return _screen.zero_point.x+(Math.random()*50)+210;
             } else {
-                return Math.random()*20;
+                return _screen.zero_point.x+Math.random()*20;
             }
 
         }

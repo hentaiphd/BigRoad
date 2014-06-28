@@ -11,15 +11,19 @@ package{
 
         public var startTime:Date;
 
+        public var _screen:ScreenManager;
+
         public function OutroGirlsState():void{
             //make variable ending
         }
 
         override public function create():void{
+            _screen = ScreenManager.getInstance();
+
             FlxG.mouse.hide();
             startTime = new Date();
 
-            apt_bg = new FlxSprite(0,0);
+            apt_bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             apt_bg.loadGraphic(ImgAptBg,true,false,320,480);
             apt_bg.addAnimation("no_bubble",[0],12,false);
             apt_bg.addAnimation("friend_bubble",[1],12,false);
@@ -27,13 +31,15 @@ package{
             this.add(apt_bg);
             apt_bg.play("no_bubble");
 
-            outro_text_1 = new FlxSprite(95,82);
+            outro_text_1 = new FlxSprite(_screen.zero_point.x+95,_screen.zero_point.y+82);
             outro_text_1.loadGraphic(ImgText,false,false,209,11);
             this.add(outro_text_1);
             outro_text_1.alpha = 0;
 
             FlxG.music.stop();
             FlxG.play(SndAmbience, .7);
+
+            _screen.addLetterbox();
         }
 
         override public function update():void{

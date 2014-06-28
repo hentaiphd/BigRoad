@@ -24,6 +24,8 @@ package{
 
         public var sparks:Array;
 
+        public var _screen:ScreenManager;
+
         public function DriveState(planet_count:Number, plushie_count:Number, time_remaining:Number):void{
             planets_visited = planet_count;
             plushies_delivered = plushie_count;
@@ -31,15 +33,16 @@ package{
         }
 
         override public function create():void{
+            _screen = ScreenManager.getInstance();
             startTime = new Date();
 
             sparks = new Array();
 
-            bg = new FlxSprite(0,0);
+            bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             bg.loadGraphic(Bg,false,false,640,480);
             add(bg);
 
-            planet = new FlxSprite(210,65);
+            planet = new FlxSprite(_screen.zero_point.x+210, _screen.zero_point.y+65);
             planet.loadGraphic(ImgPlanet,true,false,64,64);
             planet.addAnimation("1",[0],1,false);
             planet.addAnimation("2",[1],1,false);
@@ -61,7 +64,7 @@ package{
             planet.scale.x = .5;
             planet.scale.y = .5;
 
-            planet = new FlxSprite(210,65);
+            planet = new FlxSprite(_screen.zero_point.x+210, _screen.zero_point.y+65);
             planet.loadGraphic(ImgPlanet,true,false,64,64);
             planet.addAnimation("1",[0],1,false);
             planet.addAnimation("2",[1],1,false);
@@ -83,7 +86,7 @@ package{
             planet.scale.x = .5;
             planet.scale.y = .5;
 
-            truck = new FloatySprite(100,20);
+            truck = new FloatySprite(_screen.zero_point.x+100, _screen.zero_point.y+20);
             truck.loadGraphic(Truck,true,false,100,64);
             truck.addAnimation("idle", [0], 1, false);
             truck.addAnimation("open", [1], 1, false);
@@ -91,19 +94,21 @@ package{
             truck.play("boost");
             add(truck);
 
-            black_bg = new FlxSprite(0,0);
+            black_bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             black_bg.makeGraphic(320,480,0xff000000);
             this.add(black_bg);
             black_bg.alpha = 0;
 
             if (planets_visited != 0 && planets_visited != BigRoad.total_planets) {
-                time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
+                time_bar = new TimeCounter(new FlxPoint(_screen.zero_point.x+10, _screen.zero_point.y+20), 200);
                 time_bar.set_time(time_remaining);
                 time_bar.total_frames = BigRoad.total_time;
-                timer_text = new FlxSprite(40,5);
+                timer_text = new FlxSprite(_screen.zero_point.x+40,_screen.zero_point.y+5);
                 timer_text.loadGraphic(ImgTimerText,false,false,73,8);
                 add(timer_text);
             }
+
+            _screen.addLetterbox();
         }
 
         override public function update():void{
@@ -133,7 +138,7 @@ package{
                 var s:FlxSprite = sparks[i];
                 s.x -= 4;
                 s.y += 3;
-                if (s.x < -10) {
+                if (s.x < _screen.zero_point.x-10) {
                     s.visible = false;
                     sparks.splice(i, 1);
                 }

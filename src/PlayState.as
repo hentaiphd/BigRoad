@@ -54,6 +54,8 @@ package
         public var starting_mouse_x:Number;
         public var timer_text:FlxSprite;
 
+        public var _screen:ScreenManager;
+
         public function PlayState(planet_count:Number = 0, plushie_count:Number = 0, time_remaining:Number=BigRoad.total_time):void{
             planet_count++;
             planets_visited = planet_count;
@@ -62,11 +64,15 @@ package
         }
 
         override public function create():void{
-            _bg = new FlxSprite(0,0);
+            _screen = ScreenManager.getInstance();
+
+            FlxG.mouse.hide();
+
+            _bg = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
             _bg.loadGraphic(ImgBg,false,false,640,480);
             add(_bg);
 
-            truckSprite = new FloatySprite(100, 20);
+            truckSprite = new FloatySprite(_screen.zero_point.x+100, _screen.zero_point.y+20);
             truckSprite.loadGraphic(ImgTruck, true, true, 100, 64, true);
             truckSprite.addAnimation("idle", [0], 1, false);
             truckSprite.addAnimation("open", [1], 1, false);
@@ -74,7 +80,7 @@ package
             add(truckSprite);
             truckSprite.play("open");
 
-            planetCloseSprite = new FlxSprite(0, 80);
+            planetCloseSprite = new FlxSprite(_screen.zero_point.x+0, _screen.zero_point.y+80);
             planetCloseSprite.loadGraphic(ImgPlanetClose, true, true, 320, 160, true);
             planetCloseSprite.addAnimation("1", [0], 1, false);
             planetCloseSprite.addAnimation("2", [1], 1, false);
@@ -84,7 +90,7 @@ package
             add(planetCloseSprite);
             planetCloseSprite.alpha = 0;
 
-            planet = new FlxSprite(210,65);
+            planet = new FlxSprite(_screen.zero_point.x+210,_screen.zero_point.y+65);
             planet.loadGraphic(ImgPlanet,true,false,64,64);
             planet.addAnimation("1",[0],1,false);
             planet.addAnimation("2",[1],1,false);
@@ -119,22 +125,22 @@ package
 
             launcher = new Launcher(m_world);
 
-            time_bar = new TimeCounter(new FlxPoint(10, 20), 200);
+            time_bar = new TimeCounter(new FlxPoint(_screen.zero_point.x+10, _screen.zero_point.y+20), 200);
             time_bar.set_time(time_remaining);
             if (planets_visited == BigRoad.total_planets) {
                 time_bar.set_time(23*50);
             }
             time_bar.total_frames = BigRoad.total_time;
-            timer_text = new FlxSprite(40,5);
+            timer_text = new FlxSprite(_screen.zero_point.x+40,_screen.zero_point.y+5);
             timer_text.loadGraphic(ImgTimerText,false,false,73,8);
             add(timer_text);
 
             if (planets_visited == 1) {
-                smoke = new FlxSprite(0, 0);
+                smoke = new FlxSprite(_screen.zero_point.x, _screen.zero_point.y);
                 smoke.makeGraphic(320, 240, 0xaa000000);
                 add(smoke);
 
-                help_text = new FlxSprite(20,100);
+                help_text = new FlxSprite(_screen.zero_point.x+20,_screen.zero_point.y+100);
                 help_text.loadGraphic(ImgHelp,false,false,228,48);
                 add(help_text);
 
@@ -156,6 +162,7 @@ package
                     FlxG.playMusic(SndBGM);
                 }
             }
+            _screen.addLetterbox();
         }
 
         override public function update():void{
@@ -240,11 +247,12 @@ package
         public function addNewTarget():void {
             if(FlxG.state == this && _active) {
                 var t:GroundTarget = new GroundTarget(
-                    new DHPoint(Math.random()*((FlxG.width-50)/FlxG.camera.zoom),
-                    177),planets_visited);
+                    new DHPoint(_screen.zero_point.x+(Math.random()*((FlxG.width-50)/FlxG.camera.zoom)),
+                    _screen.zero_point.y+177),planets_visited);
                 add(t);
                 targets.push(t);
             }
+            _screen.addLetterbox();
         }
 
         private function setupWorld():void{
@@ -267,21 +275,13 @@ package
             var wallB:b2Body;
 
             // Left
-            wallBd.position.Set( -95 / m_physScale, 480 / m_physScale / 2);
-            wall.SetAsBox(100/m_physScale, 480/m_physScale/2);
-            //wallB = m_world.CreateBody(wallBd);
-            //wallB.CreateFixture2(wall);
-            // Right
-            wallBd.position.Set((640 + 95) / m_physScale, 480 / m_physScale / 2);
-            //wallB = m_world.CreateBody(wallBd);
-            //wallB.CreateFixture2(wall);
-            // Top
-            wallBd.position.Set(640 / m_physScale / 2, -95 / m_physScale);
-            wall.SetAsBox(680/m_physScale/2, 100/m_physScale);
-            //wallB = m_world.CreateBody(wallBd);
-            //wallB.CreateFixture2(wall);
+            wallBd.position.Set((_screen.zero_point.x) / m_physScale,
+                                (_screen.zero_point.y+480) / m_physScale / 2);
+            wall.SetAsBox((_screen.applet_dimensions.x+95)/m_physScale,
+                          _screen.applet_dimensions.y/m_physScale);
             // Bottom
-            wallBd.position.Set(640 / m_physScale / 2, (FlxG.height + 70) / m_physScale);
+            wallBd.position.Set((_screen.zero_point.x+_screen.applet_dimensions.x+100) / m_physScale,
+                                (_screen.zero_point.y+(_screen.applet_dimensions.y+550)) / m_physScale);
             wallB = m_world.CreateBody(wallBd);
             wallB.CreateFixture2(wall);
         }

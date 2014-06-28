@@ -42,12 +42,15 @@ package {
 
         public var debugText:FlxText;
 
+        public var _screen:ScreenManager;
+
         public function Launcher(world:b2World) {
+            _screen = ScreenManager.getInstance();
             m_world = world;
             projectiles = new Array();
 
-            x = 20;
-            y = originY = 50;
+            x = _screen.zero_point.x+20;
+            y = originY = _screen.zero_point.y+50;
 
             throwStartAngle = armDrawAngle = 155;
             armDrawAngleArc = 35;
@@ -164,7 +167,7 @@ package {
         }
 
         public function setPosition(pos:DHPoint):void {
-            if (pos.x > 0 && pos.x < (FlxG.width-50) / FlxG.camera.zoom) {
+            if (pos.x > _screen.zero_point.x && pos.x < _screen.zero_point.x+(_screen.applet_dimensions.x-50)) {
                 x = pos.x;
                 y = pos.y;
 

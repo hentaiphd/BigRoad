@@ -19,7 +19,10 @@ package {
 
         public var spin:Boolean = false;
 
+        public var _screen:ScreenManager;
+
         public function Projectile(world:b2World) {
+            _screen = ScreenManager.getInstance();
             x = 0;
             y = 0;
             width = 32;
@@ -47,7 +50,7 @@ package {
                 y = origin.y + 20*Math.cos((launchAngle) * (Math.PI/180));
             }
 
-            if (x > FlxG.width/FlxG.camera.zoom || x < 0 || y < 0) {
+            if (x > _screen.zero_point.x+(_screen.applet_dimensions.x) || x < _screen.zero_point.x || y < _screen.zero_point.y) {
                 destroy();
             }
 
