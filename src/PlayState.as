@@ -241,6 +241,7 @@ package
                 setTimeout(addNewTarget, Math.random()*3000);
                 plushies_delivered++;
                 FlxG.play(SndCatch, .5);
+                _screen.addLetterbox();
             }
         }
 
