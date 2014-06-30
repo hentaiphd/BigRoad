@@ -282,7 +282,7 @@ package
                           _screen.applet_dimensions.y/m_physScale);
             // Bottom
             wallBd.position.Set((_screen.zero_point.x+_screen.applet_dimensions.x+100) / m_physScale,
-                                (_screen.zero_point.y+(_screen.applet_dimensions.y+550)) / m_physScale);
+                                (_screen.zero_point.y+(_screen.applet_dimensions.y+580)) / m_physScale);
             wallB = m_world.CreateBody(wallBd);
             wallB.CreateFixture2(wall);
         }
