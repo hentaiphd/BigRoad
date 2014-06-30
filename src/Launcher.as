@@ -104,6 +104,7 @@ package {
                     armSprite.visible = true;
                     armDrawAngle = 0;
                     curProjectile.spr.visible = true;
+                    _screen.addLetterbox();
                 }
             } else if (_state == STATE_WIGGLE) {
                 if (!FlxG.mouse.pressed()) {
