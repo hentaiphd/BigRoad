@@ -17,9 +17,10 @@ package {
             screenWidth = FlxG.stage.fullScreenWidth;
             screenHeight = FlxG.stage.fullScreenHeight;
             aspect_ratio = applet_dimensions.x/applet_dimensions.y;
-            letterbox_dimensions = new FlxPoint(screenWidth/aspect_ratio, screenHeight/aspect_ratio);
-            zero_point = new FlxPoint((screenWidth - letterbox_dimensions.x) / 2,
-                                      (screenHeight - letterbox_dimensions.y) / 2);
+            letterbox_dimensions = new FlxPoint((screenWidth - screenWidth/aspect_ratio)/2,
+                                                (screenHeight - screenHeight/aspect_ratio)/2);
+            zero_point = new FlxPoint((letterbox_dimensions.x),
+                                      (letterbox_dimensions.y));
         }
 
         public function addLetterbox():void {
